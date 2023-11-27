@@ -1,0 +1,39 @@
+
+header {
+  top: 0;
+  padding: 10px;
+  text-align: center;
+  background-color: blueviolet;
+}
+
+nav {
+  background-color: #45526e;
+  color: white;
+}
+
+footer {
+  background-color: #45526e;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+#carouselExampleSlidesOnly {
+  max-width: 50%;
+  margin: auto;
+  max-height: 50vh; /* O ajusta según tus necesidades */
+}
+
+#carouselExampleSlidesOnly .carousel-inner {
+  height: 100%;
+}
+
+#carouselExampleSlidesOnly .carousel-item {
+  object-fit: cover;
+}
+
+#carrusel{
+  height: 3%;
+}
