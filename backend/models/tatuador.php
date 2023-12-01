@@ -1,6 +1,6 @@
 <?php
 
-class tatudor {
+class tatuador {
     private $Id;
     private $Nombre;
     private $imagen;

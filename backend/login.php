@@ -4,7 +4,7 @@
 
     $login = false;
 
-    require_once("lib/LibreriaPDO.php");
+    require_once("LibreriaPDO.php");
 
     if (isset($_POST["login"])){
         $usuario = $_POST["usuario"];
@@ -50,6 +50,8 @@
             //echo "SESION INICIADA COMO TATUADOR";
 
         }
+
+        //echo  $_SESSION["rol"];
     }
 
 

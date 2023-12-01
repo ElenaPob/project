@@ -1,39 +1,62 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
 header {
   top: 0;
   padding: 10px;
   text-align: center;
-  background-color: blueviolet;
 }
 
 nav {
-  background-color: #45526e;
   color: white;
+  background: linear-gradient(to bottom, #579ABC, #8AC5E3);
 }
 
 footer {
-  background-color: #45526e;
+  background: linear-gradient(to bottom, #8AC5E3, #579ABC);
   padding: 10px;
+  margin-top: auto; 
+}
+
+.bg-image {
   position: absolute;
-  bottom: 0;
+  top: 20%;
+  left: 55%;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
   left: 0;
   width: 100%;
-}
-
-#carouselExampleSlidesOnly {
-  max-width: 50%;
-  margin: auto;
-  max-height: 50vh; /* O ajusta según tus necesidades */
-}
-
-#carouselExampleSlidesOnly .carousel-inner {
   height: 100%;
+  background-color: hsla(0, 0%, 0%, 0.6);
 }
 
-#carouselExampleSlidesOnly .carousel-item {
-  object-fit: cover;
+.mr-custom{
+  margin-right: 15%;
 }
 
-#carrusel{
-  height: 3%;
+.ml-custom{
+  margin-left: 30%;
 }
+
+.primera{
+  position: relative;
+  left: 17%;
+}
+
+
+
+
+
+
+
+

@@ -4,11 +4,12 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tatuaje con alas</title>
-    <link rel="icon" href="assets/icon/golondrina.png" type="image/x-icon">
+    <title>Rosa Ink Studio</title>
+    <link rel="icon" href="assets/icon/rosa.png" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="assets/css/new.css">
 
 
@@ -16,7 +17,7 @@
     
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" href="#"><img src="assets/icon/golondrina3.png"></a>
+      <a class="navbar-brand" href="#"><img src="assets/icon/rosa50.png"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -26,17 +27,17 @@
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="tatuadores.php">Tatuadores</a>
+            <a class="nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contacto</a>
+            <a class="nav-link" href="pages/contacto/contacto.php">Contacto</a>
           </li>
           
           <?php
           // Verifica si el usuario está autenticado y tiene el rol de administrador
           if ($login && $_SESSION["rol"] == "admin") {
               echo '<li class="nav-item">
-                        <a class="nav-link" href="#">Gestionar Tatuadores</a>
+                        <a class="nav-link" href="pages/admin/gestion.php">Gestionar Tatuadores</a>
                     </li>
                     ';
           }
@@ -44,7 +45,10 @@
           // Verifica si el usuario está autenticado y tiene el rol de tatuador
           if ($login && $_SESSION["rol"] == "tatuador") {
               echo '<li class="nav-item">
-                        <a class="nav-link" href="#">Gestionar Galería</a>
+                        <a class="nav-link" href="pages/tatuador/galeria/galeria.php">Gestionar Galería</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/tatuador/pedido/pedido.php">Gestionar Galería</a>
                     </li>
                     ';
           }
@@ -52,8 +56,9 @@
         </ul>
         <?php
           if ($login) {
-            echo '<a href="backend/cerrar_sesion.php"><button class="btn btn-danger ml-auto"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cerrar Sesion</button></a>
-                  ';
+            echo '<a class="ml-auto" href="backend/cerrar_sesion.php">
+            <button class="btn btn-outline-danger"> Cerrar Sesion</button>
+            </a>';
           }else{
             echo '<button class="btn btn-outline-light btn-rounded ml-auto" data-mdb-ripple-init data-mdb-ripple-color="dark"
             data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>';
@@ -94,26 +99,95 @@
       </div>
     </div>
 
-    <!-- CAROUSEL-->
-    <div id="carrusel" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-          <div class="carousel-item active">
-              <img #carrusel src="assets/img/studio/estudio2.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img #carrusel src="assets/img/studio/estudio2.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img #carrusel src="assets/img/studio/estudio2.jpg" class="d-block w-100" alt="...">
-          </div>
+    <!--INTERIOR-->
+    <div class="container text-center">
+      LOGO+NOMBRE
+    </div>
+    <hr class="divider">
+    <div class="container">
+      <h5 class="ml-4">SERVICIOS QUE OFRECEMOS</h5>
+      <div class="d-flex">
+        <ul class="list-unstyled ml-4">
+          <li class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-briefcase fa-2x mr-3"></i> 
+            <div>
+              <p class="mb-0">Profesionalidad</p>
+              <small class="text-body-secondary">Con texto secundario descolorido</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-street-view fa-2x mr-3"></i>
+            <div>
+              <p class="mb-0">Atención personalizada</p>
+              <small class="text-body-secondary">Con texto secundario descolorido</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fa-regular fa-comments fa-2x mr-3"></i> 
+            <div>
+              <p class="mb-0">Seguimiento</p>
+              <small class="text-body-secondary">Con texto secundario descolorido</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center">
+            <i class="fa-solid fa-hand-sparkles fa-2x mr-3"></i> 
+            <div>
+              <p class="mb-0">Máxima higiene</p>
+              <small class="text-body-secondary">Con texto secundario descolorido</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="bg-image">
+      <img src="assets/img/studio/estudio2.jpg" class="w-100" alt="Estudio de tatuaje" />
+      <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.6)">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+          <h5 class="text-white mb-3">¿Tienes dudas?</h5>
+          <a href="pages/contacto/contacto.php">
+            <button type="button" class="btn btn-info" data-mdb-ripple-init>Pregunta</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <hr class="indice-divider">
+    <div class="primera row">
+      <div class="col-md-3">
+        <h2 class="indice-heading">Sobre Nosotros</h2>
+        <p class="lead">Explora nuestras experiencias y descubre lo que podemos ofrecerte. Más detalles al pulsar el botón.</p>
+        <a href="pages/contacto/contacto.php">
+          <button type="button" class="btn btn-info" data-mdb-ripple-init>Conocer</button>
+        </a>
+      </div>
+      <div class="col-md-9">
+        <img class="indice-image img-fluid " src="assets/img/studio/estudio4.jpg" alt="Calle del estudio">
       </div>
     </div>
 
+    <hr class="indice-divider">
+    <div class="primera row">
+      <div class="col-md-3">
+        <h2 class="indice-heading">Pide presupuesto
+          <br>
+          <span class="text-muted">sin compromiso</span>
+        </h2>
+        <p class="lead"> Rellena nuestro formulario con la idea que tengas y te daremos un presupuesto aproximado.</p>
+        <a href="pages/contacto/contacto.php">
+          <button type="button" class="btn btn-info" data-mdb-ripple-init>Rellenar</button>
+        </a>
+      </div>
+      <div class="col-md-9">
+        <img class="indice-image img-fluid " src="assets/img/studio/estudio5.jpg" alt="Calle del estudio2">
+      </div>
+    </div>
 
-
-
-
+    
+    
     <!--FOOTER-->
+    <br>
     <footer #footer class="text-center text-sm-start text-white">
       <div class="container p-3 pb-0">
           <section>
@@ -179,7 +253,7 @@
 
     <!-- Agrega los enlaces a los archivos JavaScript de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
   </body>
