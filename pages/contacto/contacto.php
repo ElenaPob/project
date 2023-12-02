@@ -1,4 +1,6 @@
-<?php require_once("../../backend/login.php");?>
+<?php 
+session_start();
+require_once("../../backend/login.php");?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -34,28 +36,33 @@
           </li>
           
           <?php
-          // Verifica si el usuario está autenticado y tiene el rol de administrador
-          if ($login && $_SESSION["rol"] == "admin") {
+          if (isset($_SESSION["rol"])){
+
+            // Verifica si el usuario está autenticado y tiene el rol de administrador
+            if ($_SESSION["rol"] == "admin") {
               echo '<li class="nav-item">
                         <a class="nav-link" href="../admin/gestion.php">Gestionar Tatuadores</a>
                     </li>
                     ';
-          }
+            }
 
-          // Verifica si el usuario está autenticado y tiene el rol de tatuador
-          if ($login && $_SESSION["rol"] == "tatuador") {
-              echo '<li class="nav-item">
-                        <a class="nav-link" href="../tatuador/galeria/galeria.php">Gestionar Galería</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../tatuador/pedido/pedido.php">Gestionar Galería</a>
-                    </li>
-                    ';
+            // Verifica si el usuario está autenticado y tiene el rol de tatuador
+            if ($_SESSION["rol"] == "tatuador") {
+                echo '<li class="nav-item">
+                          <a class="nav-link" href="../tatuador/galeria/galeria.php">Gestionar Galería</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="../tatuador/pedido.php">Gestionar Pedido</a>
+                      </li>
+                      ';
+            }
+
+
           }
           ?>
         </ul>
         <?php
-          if ($login) {
+          if (isset($_SESSION["rol"])) {
             echo '<a class="ml-auto" href="backend/cerrar_sesion.php">
             <button class="btn btn-outline-danger"> Cerrar Sesion</button>
             </a>';

@@ -1,4 +1,8 @@
-
+<?php session_start();
+  require_once "../../backend/admin/CRUDtatuador.php";
+  require_once "../../backend/admin/DAOtatuador.php";
+  require_once "../../backend/admin/DAOusuario.php"; 
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -27,41 +31,73 @@
             <a class="nav-link" href="../../index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores</a>
+            <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="gestion.php">Gestionar Tatuadores <span class="sr-only">(current)</span></a>
-          </li>
+          <?php
+
+            // Verifica si el usuario está autenticado y tiene el rol de administrador
+            if ($_SESSION["rol"] == "admin") {
+              echo '<li class="nav-item">
+                        <a class="nav-link" href="gestion.php">Gestionar Tatuadores</a>
+                    </li>
+                    ';
+            }
+
+          ?>
         
         </ul>
-          <a class="ml-auto" href="../../backend/cerrar_sesion.php">
+
+        <?php
+          if (isset($_SESSION["rol"])) {
+            echo '<a class="ml-auto" href="../../backend/cerrar_sesion.php">
             <button class="btn btn-outline-danger"> Cerrar Sesion</button>
-          </a>
+            </a>';
+          }else{
+            echo '<button class="btn btn-outline-light btn-rounded ml-auto" data-mdb-ripple-init data-mdb-ripple-color="dark"
+            data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>';
+          }
+
+
+        ?>
         
       </div>
     </nav>
 
 
     <!--INTERIOR-->
+
+    <form  name=f1 method="post" action='' enctype="multipart/form-data">
     
-    <table class="table align-middle mb-0 bg-white mt-3">
-      <thead class="bg-light">
-        <tr>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Estilo</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
+      <table >
+        <thead class="bg-light">
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Estilo</th>
+            <th>Descripción</th>
+            <th>id_usuario</th>
+            <th>Perfil</th>
+          </tr>
+        </thead>
+        <tbody>
         <tr>
           <td>
+            <div class="ml-5">
+              <input class="form-check-input" type="checkbox" name="selec"  aria-label="..."/>
+            </div>
+          </td>
+          <td>
+
             <div class="d-flex align-items-center">
               <img
-                  src="../../assets/img/perfil/1.jpg""
+                  src="../../assets/img/perfil/1.jpg"
                   alt="perfil"
                   style="width: 45px; height: 45px"
                   class="rounded-circle"
@@ -73,8 +109,7 @@
             </div>
           </td>
           <td>
-            <p class="fw-normal mb-1">Software engineer</p>
-            <p class="text-muted mb-0">IT department</p>
+            <input class="fw-normal mb-1">Software engineer</input>
           </td>
           <td>
             <span class="badge badge-success rounded-pill d-inline">Active</span>
@@ -88,12 +123,82 @@
             </button>
           </td>
         </tr>
-      </tbody>
-    </table>
 
-    <a class="mt-5 ml-2" href="">
-      <button type="button" class="btn btn-info" data-mdb-ripple-init>Añadir tatuador</button>
-    </a>
+        <?php
+          $dao->Listar(); 
+
+          foreach ($dao->tatuadores as $tatuador )
+          {
+              echo "<tr>"; 
+              
+              echo "<td><input type=checkbox name=selec[".$tatuador->__GET("id")."]></td>";
+              echo "<td><input type=hidden name=selecU[".$tatuador->__GET("id_usuario")."]></td>";
+              
+              //echo print_r ($dao->RecogerEmail($tatuador->__GET("id_usuario")), true);
+              
+              echo "<td><input type=text name=id[".$tatuador->__GET("id")."]  value=".$tatuador->__GET("id")." readonly=readonly></td>";
+              echo "<td><input type=text name=email value=".$dao->RecogerEmail($tatuador->__GET("id_usuario"))."></td>";
+              
+              echo "<td><input type=text name=nombre[".$tatuador->__GET("nombre")."] value=".$tatuador->__GET("nombre")."></td>";
+              echo "<td><input type=text name=apellido[".$tatuador->__GET("apellido")."] value=".$tatuador->__GET("apellido")."></td>";
+              echo "<td><input type=text name=estilo[".$tatuador->__GET("estilo")."] value=".$tatuador->__GET("estilo")."></td>";
+              echo "<td><input type=textarea name=descripcion[".$tatuador->__GET("descripcion")."] value=".$tatuador->__GET("descripcion")."></td>";
+              echo "<td><input type=text name=id_usuario[".$tatuador->__GET("id_usuario")."] value=".$tatuador->__GET("id_usuario")."></td>";
+
+              echo "<td><img src=../../assets/img/perfil/".$tatuador->__GET("imagen")." width=80 height=80>";
+              
+              echo "<input type=hidden name=NomFot[".$tatuador->__GET('id') ."] value=".$tatuador->__GET("imagen"). ">";
+              
+              echo "<input type=file name=LogoN[".$tatuador->__GET("id")."] </td>";  
+              
+              echo "</tr>"; 
+              
+          }
+
+          
+        ?>
+        </tbody>
+      </table>
+
+      <table>
+        <th>Email</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Estilo</th>
+        <th>Descripción</th>
+        <th>Rol</th>
+        <th>Contraseña</th>
+        <th>Imagen</th>
+
+      <?php
+
+
+        
+        echo "<tr>";
+            
+
+        echo "<td><input type=text name=emailNuevo ></td>";
+        echo "<td><input type=text name=nombreNuevo ></td>";
+        echo "<td><input type=text name=apellidoNuevo ></td>";
+        echo "<td><input type=text name=estiloNuevo ></td>";
+        echo "<td><input type=text name=descNuevo ></td>";
+        echo "<td><input type=text name=rolNuevo ></td>";
+        echo "<td><input type=text name=passwordNueva></td>";
+        echo "<td><input type=file name=imagenNueva></td>";
+
+      ?>
+
+      </table>
+
+
+
+      <input type="submit" name=Insertar class="btn btn-info"  value=Insertar>
+      <input type="submit" name=Actualizar  class="btn btn-info" value=Actualizar>
+      <input type="submit" name=Borrar  class="btn btn-info"  value=Borrar>
+
+      
+      
+    </form>
 
     
     <!--FOOTER-->

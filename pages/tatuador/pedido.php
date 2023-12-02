@@ -1,4 +1,4 @@
-<?php require_once("../../backend/login.php"); ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="../../../assets/css/new.css">
+    <link rel="stylesheet" href="../../assets/css/new.css">
 
 
   </head>
@@ -34,26 +34,22 @@
           </li>
           
           <?php
-          // Verifica si el usuario está autenticado y tiene el rol de administrador
-          if ($login && $_SESSION["rol"] == "admin") {
-              echo '<li class="nav-item">
-                        <a class="nav-link" href="#">Gestionar Tatuadores</a>
-                    </li>
-                    ';
-          }
 
           // Verifica si el usuario está autenticado y tiene el rol de tatuador
-          if ($login && $_SESSION["rol"] == "tatuador") {
+          if ($_SESSION["rol"] == "tatuador") {
               echo '<li class="nav-item">
-                        <a class="nav-link" href="#">Gestionar Galería</a>
+                        <a class="nav-link" href="galeria.php">Gestionar Galería <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                          <a class="nav-link" href="pedido.php">Pedido</a>
                     </li>
                     ';
           }
           ?>
         </ul>
         <?php
-          if ($login) {
-            echo '<a class="ml-auto" href="backend/cerrar_sesion.php">
+          if (isset($_SESSION["rol"])) {
+            echo '<a class="ml-auto" href="../../backend/cerrar_sesion.php">
             <button class="btn btn-outline-danger"> Cerrar Sesion</button>
             </a>';
           }else{

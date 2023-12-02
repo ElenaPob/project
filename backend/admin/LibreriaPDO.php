@@ -28,7 +28,7 @@ class DB {
     {
         $this->base=$base;  //Inicializamos en el constructor la base de datos a la que nos vamos a conectar
     }
-    
+
     
     private function Conectar()   //Metodo de conexion a BBDD
     {
@@ -59,7 +59,7 @@ class DB {
          $this->Cerrar();  //Nos cerramos la conexion
     }
     
-    public function ConsultaDatos($consulta,$param)   //Metodo para ejecutar una consulta que retorna datos
+    public function ConsultaDatos($consulta,$param,$last=false)   //Metodo para ejecutar una consulta que retorna datos
     {
     
         $this->Conectar();  //Nos conectamos con la BBDD
@@ -68,6 +68,7 @@ class DB {
         
         $sta=$this->con->prepare($consulta);   //Creamos un objeto Statement para esa consulta
         
+
         if (!$sta->execute($param))      //Si al ejecutar la consulta hay error
         {
             echo "Error al ejecutar la consulta de datos";
@@ -77,10 +78,17 @@ class DB {
             $this->filas=$sta->fetchAll(PDO::FETCH_ASSOC);   //Sacamos todos los datos devueltos por la consulta
         }
              
-        $this->Cerrar();  //Nos cerramos la conexion
+        if($last)
+        {
+            $lastId = $this->con->lastInsertId();
+            $this->Cerrar();
+            return $lastId;
+        }else{
+            $this->Cerrar();  //Nos cerramos la conexion
+        }
     }
     
-    
+
     private  function Cerrar()     //Metodo de cierre de conexion
     {
         $this->con=NULL;
