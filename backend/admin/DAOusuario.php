@@ -10,7 +10,7 @@ class Daousuario extends DB {
         public function Listar()
         {
             
-            $this->usuarios=array();   //Reseteamos el array de usuarios
+            $this->usuarios=array(); 
             
             $consulta="select * from usuarios";
             
@@ -20,26 +20,23 @@ class Daousuario extends DB {
             
             foreach ($this->filas as  $fila )
             {
-                $usuario=new usuario();       //Creamos una instancia de la clase usuario
+                $usuario=new usuario();     
                 
-                $usuario->__SET("id",$fila['id']);           //Pasamos los datos del array fila al objeto usuario
+                $usuario->__SET("id",$fila['id']);          
                 $usuario->__SET("usuario",$fila['usuario']);
                 $usuario->__SET("password",$fila['password']);
                 $usuario->__SET("rol",$fila['rol']);
                 $usuario->__SET("email",$fila['email']);
             
-                $this->usuarios[]=$usuario;         //Guardamos esa usuario en el array de objetos usuarios
+                $this->usuarios[]=$usuario;    
                 
             }
             
             
         }
 
-
         
-        
-        
-        public function Insertar($usuario)     //Inserta una usuario en la tabla
+        public function Insertar($usuario)     
         {
           $consulta="insert into usuarios values (NULL,:usuario,:password,:rol,:email)";
         
@@ -52,24 +49,24 @@ class Daousuario extends DB {
 
           
           
-          return $this->ConsultaDatos($consulta, $param, true);  //Ejecutmos la consulta de insercci�n
+          return $this->ConsultaDatos($consulta, $param, true);  
 
           
         }
     
         
-        public function Borrar($id)     //Borra una usuario a partir de su id
+        public function Borrar($id)  
         {
             $consulta="delete from usuarios where id=:id";
             
             $param=array(":id"=>$id);
             
-            $this->ConsultaSimple($consulta, $param);  //Ejecutmos la consulta de insercci�n
+            $this->ConsultaSimple($consulta, $param);
             
             
         }
         
-        public function Actualizar($usuario)     //Actualiza una usuario de la tabla
+        public function Actualizar($usuario)   
         {
             $consulta="update usuarios set :usuario,:password,:rol,:email  where id=:id ";
             
@@ -80,7 +77,7 @@ class Daousuario extends DB {
                 ":email"=>$usuario->__get("email")
             );
             
-            $this->ConsultaDatos($consulta, $param);  //Ejecutmos la consulta de actualizacion
+            $this->ConsultaDatos($consulta, $param);  
            
         }
               

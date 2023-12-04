@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Rosa Ink Studio</title>
-    <link rel="icon" href="assets/icon/rosa.png" type="image/x-icon">
+    <link rel="icon" href="../../assets/icon/rosa.png" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
@@ -23,25 +23,25 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="../../index.php">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
-            </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="../../index.php">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
+          </li>
           
           <?php
 
           // Verifica si el usuario está autenticado y tiene el rol de tatuador
-          if ($_SESSION["rol"] == "tatuador"){
+          if ($_SESSION["rol"] == "tatuador") {
               echo '<li class="nav-item">
-                        <a class="nav-link" href="galeria.php">Gestionar Galería <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="galeria.php">Gestionar Galería</a>
                     </li>
                     <li class="nav-item">
-                          <a class="nav-link" href="pedido.php">Gestionar Pedido</a>
+                          <a class="nav-link" href="pedido.php">Hacer Pedido</a>
                     </li>
                     ';
           }
@@ -62,6 +62,7 @@
         
       </div>
     </nav>
+
 
 
     <!--INTERIOR-->
@@ -117,20 +118,8 @@
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
-                  <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
-          <!--
-          <hr class="my-2" />
-
-          <section class="p-2 pt-0 ">
-              <div class="row d-flex align-items-center">
-                  <div class="col-md-7 col-lg-8 text-center text-md-start">
-                      AÑADIR AQUÍ POLÍTICA DE PRIVACIDAD O LO QUE TENGA QUE AÑADIR. HAY QUE INVESTIGAR
-                  </div>
-              </div>
-          </section>
-          -->
       </div>
     </footer>
 

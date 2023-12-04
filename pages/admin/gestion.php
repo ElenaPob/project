@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Rosa Ink Studio</title>
-    <link rel="icon" href="assets/icon/rosa.png" type="image/x-icon">
+    <link rel="icon" href="../../assets/icon/rosa.png" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
@@ -41,7 +41,10 @@
             // Verifica si el usuario está autenticado y tiene el rol de administrador
             if ($_SESSION["rol"] == "admin") {
               echo '<li class="nav-item">
-                        <a class="nav-link" href="gestion.php">Gestionar Tatuadores</a>
+                      <a class="nav-link" href="gestion.php">Gestionar Tatuadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gestionarPedidos.php">Gestionar Pedidos</a>
                     </li>
                     ';
             }
@@ -71,7 +74,7 @@
 
     <form  name=f1 method="post" action='' enctype="multipart/form-data">
     
-      <table >
+      <table class="table table-responsive" >
         <thead class="bg-light">
           <tr>
             <th></th>
@@ -249,7 +252,6 @@
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
-                  <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
           <!--

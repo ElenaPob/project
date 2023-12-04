@@ -9,7 +9,7 @@ require_once("../../backend/login.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Rosa Ink Studio</title>
-    <link rel="icon" href="assets/icon/rosa.png" type="image/x-icon">
+    <link rel="icon" href="../../assets/icon/rosa.png" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
@@ -45,16 +45,19 @@ require_once("../../backend/login.php");
               echo '<li class="nav-item">
                         <a class="nav-link" href="../admin/gestion.php">Gestionar Tatuadores</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/admin/gestionarPedidos.php">Gestionar Pedidos</a>
+                    </li>
                     ';
             }
 
             // Verifica si el usuario está autenticado y tiene el rol de tatuador
             if ($_SESSION["rol"] == "tatuador") {
                 echo '<li class="nav-item">
-                          <a class="nav-link" href="../tatuador/galeria/galeria.php">Gestionar Galería</a>
+                          <a class="nav-link" href="../tatuador/galeria.php">Gestionar Galería</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="../tatuador/pedido.php">Gestionar Pedido</a>
+                          <a class="nav-link" href="../tatuador/pedido.php">Hacer Pedido</a>
                       </li>
                       ';
             }
@@ -65,7 +68,7 @@ require_once("../../backend/login.php");
         </ul>
         <?php
           if (isset($_SESSION["rol"])) {
-            echo '<a class="ml-auto" href="backend/cerrar_sesion.php">
+            echo '<a class="ml-auto" href="../../backend/cerrar_sesion.php">
             <button class="btn btn-outline-danger"> Cerrar Sesion</button>
             </a>';
           }else{

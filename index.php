@@ -45,16 +45,19 @@ require_once("backend/login.php");
               echo '<li class="nav-item">
                         <a class="nav-link" href="pages/admin/gestion.php">Gestionar Tatuadores</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/admin/gestionarPedidos.php">Gestionar Pedidos</a>
+                    </li>
                     ';
             }
 
             // Verifica si el usuario está autenticado y tiene el rol de tatuador
             if ($_SESSION["rol"] == "tatuador") {
                 echo '<li class="nav-item">
-                          <a class="nav-link" href="pages/tatuador/galeria/galeria.php">Gestionar Galería</a>
+                          <a class="nav-link" href="pages/tatuador/galeria.php">Gestionar Galería</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" href="pages/tatuador/pedido.php">Gestionar Pedido</a>
+                          <a class="nav-link" href="pages/tatuador/pedido.php">Hacer Pedido</a>
                       </li>
                       ';
             }

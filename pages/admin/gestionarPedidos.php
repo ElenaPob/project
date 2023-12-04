@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php session_start();
+  require_once "../../backend/admin/CRUDpedido.php";
+  require_once "../../backend/admin/DAOpedido.php";
+  require_once "../../backend/admin/DAOtatuador.php"; 
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -32,21 +36,23 @@
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
           </li>
-          
           <?php
 
-          // Verifica si el usuario está autenticado y tiene el rol de tatuador
-          if ($_SESSION["rol"] == "tatuador") {
+            // Verifica si el usuario está autenticado y tiene el rol de administrador
+            if ($_SESSION["rol"] == "admin") {
               echo '<li class="nav-item">
-                        <a class="nav-link" href="galeria.php">Gestionar Galería</a>
+                        <a class="nav-link" href="gestion.php">Gestionar Tatuadores</a>
                     </li>
                     <li class="nav-item">
-                          <a class="nav-link" href="pedido.php">Hacer Pedido</a>
+                        <a class="nav-link" href="gestionarPedidos.php">Gestionar Pedidos</a>
                     </li>
                     ';
-          }
+            }
+
           ?>
+        
         </ul>
+
         <?php
           if (isset($_SESSION["rol"])) {
             echo '<a class="ml-auto" href="../../backend/cerrar_sesion.php">
@@ -64,10 +70,9 @@
     </nav>
 
 
-
     <!--INTERIOR-->
+
     
-          PAGINA DE PEDIDO
 
     
     <!--FOOTER-->

@@ -19,7 +19,7 @@ if (isset($_POST["Insertar"]) )
   $usuario->__SET("usuario", $_POST['nombreNuevo']);
   $usuario->__SET("rol", $_POST['rolNuevo']);
 
-  $passwordHash = password_hash($_POST['passwordNueva'], PASSWORD_DEFAULT) ;
+  $passwordHash = password_hash($_POST['passwordNueva'], PASSWORD_DEFAULT);
   $usuario->__SET("password", $passwordHash);
   $usuario->__SET("email", $_POST['emailNuevo']);
 
@@ -32,16 +32,15 @@ if (isset($_POST["Insertar"]) )
   $tatuador->__SET("descripcion", $_POST['descNuevo']);
   $tatuador->__SET("id_usuario", $id_usuario);
 
-  if (!empty($_FILES['imagenNueva']['name']) )          //Si hemos seleccionado alguna foto
+  if (!empty($_FILES['imagenNueva']['name']) ) 
   {
 
-    $NombreImagen = $_FILES['imagenNueva']['name'];  //Nombre original
+    $NombreImagen = $_FILES['imagenNueva']['name'];  
+
+    $RutaTemp = $_FILES['imagenNueva']['tmp_name'];  
       
-      $RutaTemp = $_FILES['imagenNueva']['tmp_name'];  //Nombre original
       
-      //$Tam = $_FILES['Foto']['size'];  //Nombre original
-      
-      copy($RutaTemp,"../../assets/img/perfil/".$NombreImagen);
+    copy($RutaTemp,"../../assets/img/perfil/".$NombreImagen);
       
   }
   else 
@@ -69,23 +68,25 @@ if (isset($_POST["Borrar"])  && isset($_POST["selec"]) && isset($_POST["selecU"]
     { 
         $dao->Borrar($clave);
         
+        
     }
     foreach ($select as $clave=>$valor  )  
     { 
         $daoU->Borrar($clave); 
     }
-    
+    //SI BORRA UN TATUADOR TAMBIÉN BORRA SU GALERIA
+
 }
     
-if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )     //Si hemos pulsado actualizar y hemos tatuadordo algun check
+if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )   
 {
-    $selec=$_POST["selec"];  //Recogemos el array de tatuadors seleccionadas
+    $selec=$_POST["selec"];  
     
-    $nombre=$_POST["Nombre"];  //Recogemos el array con los nombres
+    $nombre=$_POST["Nombre"];
     
-    $NomFot=$_POST["NomFot"];   //Recogemos el array con los nombres actuales de las fotos
+    $NomFot=$_POST["NomFot"];  
     
-    foreach ($selec as $clave=>$valor  )   //Borramos las tatuadors cuyo Id hemos seleccionado
+    foreach ($selec as $clave=>$valor  ) 
     {
         
         $tatuador= new tatuador();
@@ -94,29 +95,26 @@ if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )     //Si hemos puls
         $tatuador->__set("Nombre", $nombre[$clave ]);
         
         
-        if (isset($_FILES["LogoN"]["name"][$clave ]   )   )      //Si en el campos file asociado hemos seleccionado una foto
+        if (isset($_FILES["LogoN"]["name"][$clave ]   )   )  
         {
-            $NombreImagen = $_FILES['LogoN']['name'][$clave];  //Nombre original
+            $NombreImagen = $_FILES['LogoN']['name'][$clave];  
             
-            $RutaTemp = $_FILES['LogoN']['tmp_name'][$clave];  //Nombre original
-            
-            //$Tam = $_FILES['Foto']['size'];  //Nombre original
+            $RutaTemp = $_FILES['LogoN']['tmp_name'][$clave];  
             
             copy($RutaTemp,"Logos/$NombreImagen");
             
-            $tatuador->__set("Logo", $NombreImagen );    //El nombre del logo ser� el seleccionado
+            $tatuador->__set("Logo", $NombreImagen );  
         }
-        else  //No hemos seleccinado ninguna foto para actualizar 
+        else 
         {
             
             echo "No coge la foto nueva";
-            
             $tatuador->__set("Logo", $NomFot[$clave ] ); 
             
         }
         
                
-        $dao->Actualizar($tatuador);    //Actualizamos la tatuador con los datos del fprmulario  
+        $dao->Actualizar($tatuador);  
         
     }
     

@@ -5,12 +5,12 @@
 
     class Daotatuador extends DB {
         
-            public $tatuadores=array();    //Array de objetos de la clase tatuador
+            public $tatuadores=array();  
             
             public function Listar()
             {
                 
-                $this->tatuadores=array();   //Reseteamos el array de tatuadores
+                $this->tatuadores=array();  
                 
                 $consulta="select * from tatuadores";
                 
@@ -20,9 +20,9 @@
                 
                 foreach ($this->filas as  $fila )
                 {
-                    $tatuador= new tatuador();       //Creamos una instancia de la clase tatuador
+                    $tatuador= new tatuador();   
                     
-                    $tatuador->__SET("id",$fila['id']);           //Pasamos los datos del array fila al objeto tatuador
+                    $tatuador->__SET("id",$fila['id']);       
                     $tatuador->__SET("nombre",$fila['nombre']);
                     $tatuador->__SET("apellido",$fila['apellido']);
                     $tatuador->__SET("descripcion",$fila['descripcion']);
@@ -30,7 +30,7 @@
                     $tatuador->__SET("id_usuario",$fila['id_usuario']);
                     $tatuador->__SET("imagen",$fila['imagen']);
                 
-                    $this->tatuadores[]=$tatuador;         //Guardamos esa tatuador en el array de objetos tatuadores
+                    $this->tatuadores[]=$tatuador;     
                     
                 }
                 
@@ -50,7 +50,7 @@
             }
             
             
-            public function Insertar($tatuador)     //Inserta una tatuador en la tabla
+            public function Insertar($tatuador)   
             {
                 $consulta="insert into tatuadores values (NULL,:nombre,:apellido,:estilo,:descripcion,:id_usuario,:imagen)";
                 
@@ -63,23 +63,23 @@
                     ":imagen"=>$tatuador->__get("imagen")
                 );
                 
-                $this->ConsultaDatos($consulta, $param);  //Ejecutmos la consulta de insercci�n
+                $this->ConsultaDatos($consulta, $param);
             
             }
         
             
-            public function Borrar($id)     //Borra una tatuador a partir de su Id
+            public function Borrar($id)  
             {
                 $consulta="delete from tatuadores where id=:id";
                 
                 $param=array(":id"=>$id);
                 
-                $this->ConsultaSimple($consulta, $param);  //Ejecutmos la consulta de insercci�n
+                $this->ConsultaSimple($consulta, $param); 
                 
                 
             }
             
-            public function Actualizar($tatuador)     //Actualiza una tatuador de la tabla
+            public function Actualizar($tatuador) 
             {
                 $consulta="update tatuadores set :nombre,:apellido,:estilo,:descripcion,:id_usuario,:imagen  where id=:id ";
                 
@@ -93,7 +93,7 @@
                     ":imagen"=>$tatuador->__get("imagen")
                 );
                 
-                $this->ConsultaDatos($consulta, $param);  //Ejecutmos la consulta de actualizacion
+                $this->ConsultaDatos($consulta, $param);
             
             }
         
