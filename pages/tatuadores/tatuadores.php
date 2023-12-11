@@ -1,7 +1,7 @@
-<?php 
-session_start();
-require_once("../../backend/login.php"); 
-
+<?php session_start();
+  require_once "../../backend/admin/CRUDtatuador.php";
+  require_once "../../backend/admin/DAOtatuador.php";
+  require_once "../../backend/admin/DAOusuario.php"; 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,10 +28,10 @@ require_once("../../backend/login.php");
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">Home</a>
+            <a class="home nav-link" href="../../index.php">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores <span class="sr-only">(current)</span></a>
+          <li class="tatuadores nav-item">
+            <a class="contacto nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
@@ -46,7 +46,7 @@ require_once("../../backend/login.php");
                         <a class="nav-link" href="../admin/gestion.php">Gestionar Tatuadores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/admin/gestionarPedidos.php">Gestionar Pedidos</a>
+                        <a class="nav-link" href="../admin/gestionarPedidos.php">Gestionar Pedidos</a>
                     </li>
                     ';
             }
@@ -83,8 +83,8 @@ require_once("../../backend/login.php");
     </nav>
 
     <!--FORMULARIO LOGIN-->
-    <div class="modal rounded-5" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="loginModal" tabindex="-1"  aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div >
             <div class="modal-content">
                 <div class="modal-header bg-info">
                     <h5  class="modal-title text-white" id="loginModalLabel">Iniciar Sesión</h5>
@@ -113,42 +113,54 @@ require_once("../../backend/login.php");
 
 
     <!--INTERIOR-->
-    
 
+    <?php
+      $dao->Listar();
 
-    <div class="card ml-3 mt-4" style="width: 18rem;">
-      <img src="../../assets/img/perfil/1.jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Nombre</h5>
-        <p class="card-text">Description</p>
-      </div>
-      <div class="card-footer">
-        <button type="button" class="btn btn-info" data-mdb-ripple-init data-toggle="modal" data-target="#miModal">Más información</button>
-      </div>
-    </div>
+      echo '<div class="d-flex flex-wrap justify-content-center">';
 
+      foreach ($dao->tatuadores as $tatuador) {
+          echo '<div class="card ml-3 mt-4 cardTatuador" >';
+          echo '<img src="../../assets/img/perfil/' . $tatuador->__GET("imagen") . '" class="card-img-top imagenPequeTatuador" alt="Imagen del tatuador más pequeña">';
+          echo '<div class="card-body">';
+          echo '<h5 class="card-title">' . $tatuador->__GET("nombre") . ' ' . $tatuador->__GET("apellido") . '</h5>';
+          echo '<p class="card-text">' . $tatuador->__GET("estilo") . '</p>';
+          echo '</div>';
+          echo '<div class="card-footer">';
+          echo '<button type="button" class="btn btn-info" data-mdb-ripple-init data-toggle="modal" data-target="#miModal' . $tatuador->__GET("id") . '">Más información</button>';
+          echo '</div>';
+          echo '</div>';
 
-    <!-- Modal -->
-    <div class="modal" id="miModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Nombre del tatuador</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <img src="../../assets/img/perfil/1.jpg" class="card-img-top" alt="...">
-            <p>Lista con el contenido del tatuador</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
+          echo '<div class="modal" id="miModal' . $tatuador->__GET("id") . '" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">';
+          echo '<div class="modal-dialog" role="document">';
+          echo '<div class="modal-content">';
+          echo '<div class="modal-header bg-info text-white">';
+          echo '<h5 class="modal-title" id="exampleModalLabel">' . $tatuador->__GET("nombre") . ' ' . $tatuador->__GET("apellido") . '</h5>';
+          echo '<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">';
+          echo '<span aria-hidden="true">&times;</span>';
+          echo '</button>';
+          echo '</div>';
+          echo '<div class="modal-body">';
+          echo '<img src="../../assets/img/perfil/' . $tatuador->__GET("imagen") . '" class="card-img-top imagenGrandeTatuador" alt="Imagen del tatuador más grande">';
+          echo '<ul>';
+          echo '<li><strong>Nombre: </strong>' . $tatuador->__GET("nombre") . '</li>';
+          echo '<li><strong>Apellido: </strong>' . $tatuador->__GET("apellido") . '</li>';
+          echo '<li><strong>Email: </strong>' . $dao->RecogerEmail($tatuador->__GET("id_usuario")) . '</li>';
+          echo '<li><strong>Estilo: </strong>' . $tatuador->__GET("estilo") . '</li>';
+          echo '<li><strong>Descripcion: </strong>' . $tatuador->__GET("descripcion") . '</li>';
+          echo '</ul>';
+          echo '</div>';
+          echo '<div class="modal-footer">';
+          echo '<button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>';
+          echo '</div>';
+          echo '</div>';
+          echo '</div>';
+          echo '</div>';
+      }
 
+      echo '</div>';
+
+    ?>
 
     
     <!--FOOTER-->
@@ -201,21 +213,12 @@ require_once("../../backend/login.php");
                   </div>
               </div>
           </section>
-          <!--
-          <hr class="my-2" />
-
-          <section class="p-2 pt-0 ">
-              <div class="row d-flex align-items-center">
-                  <div class="col-md-7 col-lg-8 text-center text-md-start">
-                      AÑADIR AQUÍ POLÍTICA DE PRIVACIDAD O LO QUE TENGA QUE AÑADIR. HAY QUE INVESTIGAR
-                  </div>
-              </div>
-          </section>
-          -->
       </div>
     </footer>
 
-    <!-- Agrega los enlaces a los archivos JavaScript de Bootstrap y jQuery -->
+
+
+    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

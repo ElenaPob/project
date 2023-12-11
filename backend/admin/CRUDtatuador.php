@@ -1,13 +1,16 @@
 <?php 
  
 require_once 'Daotatuador.php';  
-require_once 'Daousuario.php';  
+require_once 'Daousuario.php'; 
+require_once 'Daogaleria.php';   
 
 $base="estudiotat";
  
 $dao = new Daotatuador($base);
 
 $daoU = new Daousuario($base); 
+
+$daoG = new Daogaleria($base); 
 
 
 if (isset($_POST["Insertar"]) )
@@ -40,7 +43,7 @@ if (isset($_POST["Insertar"]) )
     $RutaTemp = $_FILES['imagenNueva']['tmp_name'];  
       
       
-    copy($RutaTemp,"../../assets/img/perfil/".$NombreImagen);
+    copy($RutaTemp,"../../assets/img/perfil/$NombreImagen");
       
   }
   else 
@@ -57,32 +60,39 @@ if (isset($_POST["Insertar"]) )
 }
 
 
-if (isset($_POST["Borrar"])  && isset($_POST["selec"]) && isset($_POST["selecU"]) )  
+if (isset($_POST["Borrar"])  && isset($_POST["selec"]))  
 {
     
     $selec=$_POST["selec"]; 
-    $select=$_POST["selecU"];
 
       
     foreach ($selec as $clave=>$valor  )  
     { 
+        $id_usuario=$dao->CogerIdUsuario($clave);
+
         $dao->Borrar($clave);
-        
-        
+
+        $daoU->Borrar($id_usuario);
+
+        $daoG->BorrarGaleriaEntera($clave);
+
     }
-    foreach ($select as $clave=>$valor  )  
-    { 
-        $daoU->Borrar($clave); 
-    }
-    //SI BORRA UN TATUADOR TAMBIÉN BORRA SU GALERIA
 
 }
+
+
     
 if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )   
 {
     $selec=$_POST["selec"];  
     
-    $nombre=$_POST["Nombre"];
+    $nombre=$_POST["nombre"];
+    $apellido=$_POST["apellido"];
+    $estilo=$_POST["estilo"];
+    $descripcion=$_POST["descripcion"];
+
+    $email=$_POST["email"];
+    $rol=$_POST["rol"];
     
     $NomFot=$_POST["NomFot"];  
     
@@ -91,32 +101,35 @@ if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )
         
         $tatuador= new tatuador();
         
-        $tatuador->__set("Id", $clave);
-        $tatuador->__set("Nombre", $nombre[$clave ]);
+        $tatuador->__SET("id", $clave);
+        $tatuador->__SET("nombre", $nombre);
+        $tatuador->__SET("apellido", $apellido);
+        $tatuador->__SET("estilo", $estilo);
+        $tatuador->__SET("descripcion", $descripcion);
         
         
-        if (isset($_FILES["LogoN"]["name"][$clave ]   )   )  
+        if (!empty($_FILES['imagenNueva']['name'])    )  
         {
-            $NombreImagen = $_FILES['LogoN']['name'][$clave];  
+            $NombreImagen = $_FILES['LogoN']['name'];  
             
-            $RutaTemp = $_FILES['LogoN']['tmp_name'][$clave];  
+            $RutaTemp = $_FILES['LogoN']['tmp_name'];  
             
-            copy($RutaTemp,"Logos/$NombreImagen");
+            copy($RutaTemp,"../../assets/img/perfil/$NombreImagen");
             
-            $tatuador->__set("Logo", $NombreImagen );  
+            $tatuador->__SET("imagen", $NombreImagen );  
         }
         else 
         {
-            
-            echo "No coge la foto nueva";
-            $tatuador->__set("Logo", $NomFot[$clave ] ); 
-            
+
+            $tatuador->__SET("imagen", $NomFot); 
         }
         
                
         $dao->Actualizar($tatuador);  
         
     }
+
+
     
    
 }

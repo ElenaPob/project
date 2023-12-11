@@ -68,6 +68,7 @@ class DB {
         
         $sta=$this->con->prepare($consulta);   //Creamos un objeto Statement para esa consulta
         
+        //print_r($sta);
 
         if (!$sta->execute($param))      //Si al ejecutar la consulta hay error
         {
@@ -76,6 +77,7 @@ class DB {
         else  //Se ha creado correctamente el objeto Statement 
         {
             $this->filas=$sta->fetchAll(PDO::FETCH_ASSOC);   //Sacamos todos los datos devueltos por la consulta
+            //print_r($this->filas);
         }
              
         if($last)

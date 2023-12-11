@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+require_once "../../backend/admin/CRUDgaleria.php";
+require_once "../../backend/admin/DAOgaleria.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -66,10 +70,48 @@
 
 
     <!--INTERIOR-->
-    
-          PAGINA DE GALERIA
 
+    <form  name=f1 method="post" action='' enctype="multipart/form-data">
+      <div class="container mt-5">
+      
+        <?php
+
+              echo '<div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="form4Example1">Imagen para añadir:</label>
+                  <input type="file" name="imagenNueva" class="form-control" />
+                </div>';
+
+
+        ?>
+        <input type="submit" name=Insertar class="btn btn-info mb-5"  value="Insertar">
+        <div class="row">
+          <?php
+           
+            $dao->Listar(); 
+
+            foreach ($dao->galerias as $galeria) {
+              echo '<div class="col-md-3 galeria-item">'; // Ajusta el número de columnas según tus necesidades
+              echo "<input type='checkbox' name='selec[" . $galeria->__GET("id") . "]' id='checkbox-" . $galeria->__GET("id") . "'>";
+
+              echo '<div class="d-flex align-items-center">
+                    <img src="../../assets/img/tatuajes/' . $galeria->__GET("imagen") . '" alt="tatuaje" class="img-fluid" style="width: 95%; height: 100%;" />
+                  </div>';
+
+              echo "<input type='hidden' name='selec[" . $galeria->__GET("id_tatuador") . "]' id='checkbox-" . $galeria->__GET("id_tatuador") . "'>";
+              echo '</div>';
+            }
+          ?>
+        </div>
+
+        <input type="submit" name=Eliminar class="btn btn-danger mt-5"  value="Eliminar Seleccionados">
+      
+    </div>
     
+  </form>
+
+
+
+
     <!--FOOTER-->
     <hr class="divider">
     <footer #footer class="text-center text-sm-start text-white">

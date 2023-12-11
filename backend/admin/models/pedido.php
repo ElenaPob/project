@@ -2,9 +2,9 @@
 
     class pedido {
         private $id;
-        private $id_tatuador;
         private $detalle;
         private $fecha;
+        private $id_tatuador;
         private $estado;
 
         function __get($nombre)

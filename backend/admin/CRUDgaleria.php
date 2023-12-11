@@ -1,7 +1,7 @@
 <?php 
  
-    require_once 'Daogaleria.php';  
-    require_once 'Daogaleria.php';  
+    require_once 'DAOgaleria.php';  
+    require_once 'DAOtatuador.php';  
 
     $base="estudiotat";
     
@@ -13,37 +13,37 @@
     if (isset($_POST["Insertar"]) )
     {
 
-    $galeria = new galeria();
+        $galeria = new galeria();
 
+        $id_usuario = $_SESSION["idUsuario"];
+        $id_tatuador = $daoT->idConIdUsuario($id_usuario);
 
-    $galeria->__SET("id_tatuador", $id_tatuador);
+        $galeria->__SET("id_tatuador", $id_tatuador);
 
-    if (!empty($_FILES['imagenNueva']['name']) ) 
-    {
+        if (!empty($_FILES['imagenNueva']['name']) ) 
+        {
 
-        $NombreImagen = $_FILES['imagenNueva']['name'];  
+            $NombreImagen = $_FILES['imagenNueva']['name'];  
 
-        $RutaTemp = $_FILES['imagenNueva']['tmp_name'];  
+            $RutaTemp = $_FILES['imagenNueva']['tmp_name'];  
+            
+            
+            copy($RutaTemp,"../../assets/img/tatuajes/".$NombreImagen);
+            
+        }
+        else 
+        {
+            $NombreImagen="noimagen";
+        }
         
+        $galeria->__SET("imagen",$NombreImagen );
         
-        copy($RutaTemp,"../../assets/img/perfil/".$NombreImagen);
+        $dao->Insertar($galeria);
         
     }
-    else 
-    {
-        $NombreImagen="noimagen";
-    }
-    
-    $galeria->__SET("imagen",$NombreImagen );
-    
-    $dao->Insertar($galeria);
-    
-    
-        
-    }
 
 
-    if (isset($_POST["Borrar"])  && isset($_POST["selec"]) )  
+    if (isset($_POST["Eliminar"])  && isset($_POST["selec"]) )  
     {
         
         $selec=$_POST["selec"]; 

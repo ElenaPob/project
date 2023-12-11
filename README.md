@@ -2,6 +2,7 @@
 # Estudio de Tatuajes con alas
 
 Este proyecto trata de mostrar la información de un estudio de tatuajes y de poder gestionar tanto los perfiles de los tatuadores como su creación, edición o eliminación.
+Además los tatuadores podrán subir fotos a una galería común y hacer un pedido que llegará al administrador.
 
 
 ## Apéndice

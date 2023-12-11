@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+
+require_once "../../backend/admin/CRUDpedido.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -67,7 +71,35 @@
 
     <!--INTERIOR-->
     
-          PAGINA DE PEDIDO
+    <div class="container mt-5">
+      <form  name=f1 method="post" action='' enctype="multipart/form-data">
+          <h2>Selecciona el color que quieras pedir</h2>
+
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th></th>
+                      <th>Color</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <?php
+                     $colores = array('#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff');
+                    foreach ($colores as $color) {
+                        echo '<tr>';
+                        //$color=explode(" ",$color);
+                        //echo "<td><input type='checkbox' name='Selec[".trim($color[0])."]'>$color[1]</td>";
+                        echo '<td><input type="checkbox" name="selec[' . $color . ']"></td>';
+                        echo '<td style="background-color:' . $color . '; width:30px; height:30px;"></td>';
+                        echo '</tr>';
+                    }
+                  ?>
+              </tbody>
+          </table>
+
+          <input type="submit" name=Pedir class="btn btn-info"  value="Hacer Pedido">
+        </form>
+    </div>
 
     
     <!--FOOTER-->

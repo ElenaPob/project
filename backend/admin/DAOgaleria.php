@@ -1,43 +1,43 @@
 <?php
 
 require_once 'LibreriaPDO.php';
-require_once 'models/galeri.php';
+require_once 'models/galeria.php';
 
-class Daogalerias extends DB {
+class Daogaleria extends DB {
     
         public $galerias=array();  
         
         public function Listar()
         {
-            
             $this->galerias=array();  
             
-            $consulta="select * from galeria";
+            $consulta="SELECT * FROM galeria";
             
             $param=array(); 
             
             $this->ConsultaDatos($consulta, $param);
-            
-            foreach ($this->filas as  $fila )
+            //print_r($consulta);
+            foreach ($this->filas as $fila)
             {
                 $galeria=new galeria();      
                 
                 $galeria->__SET("id",$fila['id']);           
                 $galeria->__SET("imagen",$fila['imagen']);
+                $galeria->__SET("id_tatuador",$fila['id_tatuador']);  
             
                 $this->galerias[]=$galeria;          
             }
-            
+
         }
 
 
         public function Insertar($galeria)  
         {
-          $consulta="insert into galeria values (NULL,:imagen,:id_usuario)";
+          $consulta="insert into galeria values (NULL,:imagen,:id_tatuador)";
         
           $param=array(
             ":imagen"=>$galeria->__get("imagen"),
-            ":id_usuario"=>$tatuador->__get("id_usuario")
+            ":id_tatuador"=>$galeria->__get("id_tatuador")
           );
 
           return $this->ConsultaDatos($consulta, $param, true); 
@@ -49,6 +49,16 @@ class Daogalerias extends DB {
             $consulta="delete from galeria where id=:id";
             
             $param=array(":id"=>$id);
+            
+            $this->ConsultaSimple($consulta, $param); 
+             
+        }
+
+        public function BorrarGaleriaEntera($id_tatuador)  
+        {
+            $consulta="delete from galeria where id_tatuador=:id_tatuador";
+            
+            $param=array(":id_tatuador"=>$id_tatuador);
             
             $this->ConsultaSimple($consulta, $param); 
              

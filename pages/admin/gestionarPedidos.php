@@ -1,7 +1,6 @@
 <?php session_start();
   require_once "../../backend/admin/CRUDpedido.php";
-  require_once "../../backend/admin/DAOpedido.php";
-  require_once "../../backend/admin/DAOtatuador.php"; 
+  require_once "../../backend/admin/DAOpedido.php"; 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -72,7 +71,84 @@
 
     <!--INTERIOR-->
 
-    
+    <form name=f1 method="post" action='' enctype="multipart/form-data">
+
+
+
+      <?php
+        $filtros = ["Todo", "Finalizado", "En curso"];
+        echo " <select class='form-control ml-4 mt-4 selectPedido' name='estado' onChange='document.f1.submit();'>";
+
+        foreach ($filtros as $clave=>$value)
+        {
+            echo "<option value='$clave' ";
+
+            if (  $filtro==$clave)
+            {
+                echo " selected ";
+            }
+
+
+            echo "> $value </option>";
+
+        }
+        echo "</select><br>";
+
+      ?>
+
+
+      <table class="table table-responsive ml-4 mt-4" >
+        <thead class="bg-light">
+          <tr>
+            <th></th>
+            <th>Id pedido</th>
+            <th>Id tatuador</th>
+            <th>Detalle del pedido</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+
+          
+          </tr>
+        </thead>
+        <tbody>
+
+          <?php
+            if($filtro == 0){
+              $dao->Listar();
+            }elseif($filtro==1){
+              $dao->pedidoFinalizado();
+            }elseif($filtro==2){
+              $dao->pedidoEnCurso();
+            }
+
+            foreach ($dao->pedidos as $pedido) {
+                echo "<tr>"; 
+                echo "<td><input type='checkbox' name='selectPedido[".$pedido->__GET("id")."]'></td>";
+
+                echo "<td><p>".$pedido->__GET("id")."</p></td>";
+                echo "<td><p>".$pedido->__GET("id_tatuador")."</p></td>";
+                echo "<td><p>".$pedido->__GET("detalle")."</p></td>";
+                echo "<td><p>".$pedido->__GET("fecha")."</p></td>";
+
+                if ($pedido->__GET("estado") == 0){
+                    echo "<td><p>En curso</p>
+                    </td>";
+                } else {
+                    echo "<td><p>Finalizado</p>
+                    </td>";
+                }
+
+                echo "</tr>"; 
+            }
+          ?>
+
+
+        </tbody>
+      </table>
+
+      <input type="submit" name=Actualizar class="btn btn-info ml-4"  value="Finalizar Pedido Seleccionado">
+
+    </form>
 
     
     <!--FOOTER-->

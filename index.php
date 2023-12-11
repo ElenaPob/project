@@ -1,7 +1,8 @@
-<?php 
-session_start();
-require_once("backend/login.php"); 
+<?php
+  session_start();
+  require_once("backend/login.php");
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -11,11 +12,7 @@ require_once("backend/login.php");
     <link rel="icon" href="assets/icon/rosa.png" type="image/x-icon">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="assets/css/new.css">
-
-
+    <link rel="stylesheet" href="assets/css/new.css"/>
   </head>
     
   <body>
@@ -27,13 +24,13 @@ require_once("backend/login.php");
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a  class="home nav-link" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores</a>
+            <a  class="tatuadores nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/contacto/contacto.php">Contacto</a>
+            <a class="contacto nav-link" href="pages/contacto/contacto.php">Contacto</a>
           </li>
           
           <?php
@@ -74,7 +71,7 @@ require_once("backend/login.php");
             </a>';
           }else{
             echo '<button class="btn btn-outline-light btn-rounded ml-auto" data-mdb-ripple-init data-mdb-ripple-color="dark"
-            data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>';
+            onclick="openForm()">Iniciar Sesión</button>';
           }
 
 
@@ -84,83 +81,88 @@ require_once("backend/login.php");
     </nav>
 
     <!--FORMULARIO LOGIN-->
-    <div class="modal rounded-5" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h5  class="modal-title text-white" id="loginModalLabel">Iniciar Sesión</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-        
-                  <div class="form-group">
-                      <label for="usuario">Usuario</label>
-                      <input name="usuario" type="text" class="form-control" id="usuario" placeholder="Introduce tu usuario">
-                  </div>
-                  <div class="form-group">
-                      <label for="contraseña">Contraseña:</label>
-                      <input name="password" type="password" class="form-control" id="password" placeholder="Introduce tu contraseña">
-                  </div>
-                  <button name="login" type="submit" class="btn btn-outline-info btn-rounded" data-mdb-ripple-init data-mdb-ripple-color="dark">Iniciar Sesión</button>
 
-                </form>
-            </div>
-          </div>
-      </div>
+    <div id="formularioDeLogin" class="form-popup">
+        
+        <form class="form-container" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <h3>Iniciar Sesión</h3>
+        <hr class="divider">
+            <i class="fas fa-user"></i>
+            <label for="usuario">Usuario:</label>
+            <input class="form-control validate" type="text" id="usuario" name="usuario" required>
+            <br>
+            <i class="fas fa-lock"></i>
+            <label for="password">Contraseña:</label>
+            <input class="form-control validate" type="password" id="password" name="password" required>
+            <br>
+            <?php
+              
+              if (isset($autenticacionFallida) && $autenticacionFallida) {
+                echo '<div class="alert alert-danger" role="alert">Usuario o contraseña incorrectos.</div>';
+              }
+            ?>
+
+            <button name="login" type="submit" class="btn btn-outline-info btn-rounded" data-mdb-ripple-init data-mdb-ripple-color="dark">Iniciar Sesión</button>
+            <button class="btn btn-outline-danger btn-rounded" onclick="closeForm()">Cerrar</button>
+        </form>
+        
     </div>
 
     <!--INTERIOR-->
-    <div class="container text-center">
-      LOGO+NOMBRE
+    <div class="text-center contenedorDelLogoDelEstudio">
+      <img class="imagenDelEstudio" src="assets/icon/rosaInk.jpeg" alt="Logo del estudio de tatuajes">
     </div>
     <hr class="divider">
+
     <div class="container">
-      <h5 class="ml-4">SERVICIOS QUE OFRECEMOS</h5>
-      <div class="d-flex">
-        <ul class="list-unstyled ml-4">
-          <li class="d-flex align-items-center mb-3">
-            <i class="fa-solid fa-briefcase fa-2x mr-3"></i> 
-            <div>
-              <p class="mb-0">Profesionalidad</p>
-              <small class="text-body-secondary">Con texto secundario descolorido</small>
+      <div class="row">
+
+        <div class="col-md-6">
+          <h4 class="ml-4">SERVICIOS QUE OFRECEMOS</h4>
+          <ul class="list-unstyled ml-4">
+            <li class="d-flex align-items-center mb-3">
+              <i class="fa-solid fa-briefcase fa-2x mr-3"></i> 
+              <div>
+                <p class="lead mb-0 font-weight-medium">Profesionalidad</p>
+                <small class="text-body-secondary">Con texto secundario descolorido</small>
+              </div>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <i class="fa-solid fa-street-view fa-2x mr-3"></i>
+              <div>
+                <p class="mb-0">Atención personalizada</p>
+                <small class="text-body-secondary">Con texto secundario descolorido</small>
+              </div>
+            </li>
+            <li class="d-flex align-items-center mb-3">
+              <i class="fa-regular fa-comments fa-2x mr-3"></i> 
+              <div>
+                <p class="mb-0">Seguimiento</p>
+                <small class="text-body-secondary">Con texto secundario descolorido</small>
+              </div>
+            </li>
+            <li class="d-flex align-items-center">
+              <i class="fa-solid fa-hand-sparkles fa-2x mr-3"></i> 
+              <div>
+                <p class="mb-0">Máxima higiene</p>
+                <small class="text-body-secondary">Con texto secundario descolorido</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="bg-image">
+            <img src="assets/img/studio/estudio2.jpg" class="w-100 imagenPregunta" alt="Estudio de tatuaje" />
+            <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.6)">
+              <div class="d-flex flex-column justify-content-center align-items-center h-100">
+                <h5 class="text-white mb-3">¿Tienes dudas?</h5>
+                <a href="pages/contacto/contacto.php">
+                  <button type="button" class="btn btn-info" data-mdb-ripple-init>Pregunta</button>
+                </a>
+              </div>
             </div>
-          </li>
-          <li class="d-flex align-items-center mb-3">
-            <i class="fa-solid fa-street-view fa-2x mr-3"></i>
-            <div>
-              <p class="mb-0">Atención personalizada</p>
-              <small class="text-body-secondary">Con texto secundario descolorido</small>
-            </div>
-          </li>
-          <li class="d-flex align-items-center mb-3">
-            <i class="fa-regular fa-comments fa-2x mr-3"></i> 
-            <div>
-              <p class="mb-0">Seguimiento</p>
-              <small class="text-body-secondary">Con texto secundario descolorido</small>
-            </div>
-          </li>
-          <li class="d-flex align-items-center">
-            <i class="fa-solid fa-hand-sparkles fa-2x mr-3"></i> 
-            <div>
-              <p class="mb-0">Máxima higiene</p>
-              <small class="text-body-secondary">Con texto secundario descolorido</small>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="bg-image">
-      <img src="assets/img/studio/estudio2.jpg" class="w-100" alt="Estudio de tatuaje" />
-      <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.6)">
-        <div class="d-flex flex-column justify-content-center align-items-center h-100">
-          <h5 class="text-white mb-3">¿Tienes dudas?</h5>
-          <a href="pages/contacto/contacto.php">
-            <button type="button" class="btn btn-info" data-mdb-ripple-init>Pregunta</button>
-          </a>
+          </div>
         </div>
       </div>
     </div>
@@ -264,7 +266,21 @@ require_once("backend/login.php");
       </div>
     </footer>
 
+    <script>
+
+        function openForm() {
+          document.getElementById("formularioDeLogin").style.display = "block";
+        }
+
+        function closeForm() {
+          document.getElementById("formularioDeLogin").style.display = "none";
+        }
+
+    </script>
+
+   
     <!-- Agrega los enlaces a los archivos JavaScript de Bootstrap y jQuery -->
+    <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

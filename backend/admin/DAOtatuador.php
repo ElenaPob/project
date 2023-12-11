@@ -37,6 +37,30 @@
                 
             }
 
+            public function idConIdUsuario($id_usuario){
+
+                $consulta="select id from tatuadores where id_usuario=$id_usuario";
+                
+                $param=array(); 
+
+                $this->ConsultaDatos($consulta, $param);
+
+                return $this->filas[0]["id"];
+
+            }
+
+            public function CogerIdUsuario($id){
+
+                $consulta="select id_usuario from tatuadores where id=$id";
+                
+                $param=array(); 
+
+                $this->ConsultaDatos($consulta, $param);
+
+                return $this->filas[0]["id_usuario"];
+
+            }
+
             public function RecogerEmail($id){
 
                 $consulta="select email from usuarios where id=$id";
@@ -47,6 +71,30 @@
 
                 return $this->filas[0]["email"];
 
+            }
+
+            public function RecogerRol($id){
+
+                $consulta="select rol from usuarios where id=$id";
+                
+                $param=array(); 
+                
+                $this->ConsultaDatos($consulta, $param);
+
+                return $this->filas[0]["rol"];
+
+            }
+
+
+            public function ConseguirEstilos(){
+
+                $consulta="select estilo from tatuadores";
+                
+                $param=array(); 
+                
+                $this->ConsultaDatos($consulta, $param);
+
+                return $this->filas[0]["estilo"];
             }
             
             

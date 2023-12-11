@@ -1,67 +1,69 @@
 <?php 
  
-require_once 'Daotatuador.php';  
-require_once 'Daopedido.php';  
+    require_once 'Daotatuador.php';  
+    require_once 'Daopedido.php';  
 
-$base="estudiotat";
- 
-$dao = new Daopedido($base);
-
-$daoT = new Daotatuador($base); 
-
-
-if (isset($_POST["Insertar"]) )
-{
-
-  $pedido = new pedido();
-
-  $pedido->__SET("id", $_POST['id']);
-  $pedido->__SET("id_tatuador", $id_tatuador);
-  $pedido->__SET("detalle",  $_POST['detalle']);
-  $pedido->__SET("fecha", $_POST['fecha']);
-  $pedido->__SET("estado", $_POST['estado']);
-
-  $id_pedido = $dao->Insertar($pedido);
-
-}
-
-
-if (isset($_POST["Borrar"])  && isset($_POST["selec"]))  
-{
+    $base="estudiotat";
     
-    $selec=$_POST["selec"]; 
-  
-    foreach ($selec as $clave=>$valor  )  
-    { 
-        $dao->Borrar($clave);
-        
-    }
-    
-}
-    
-if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )   
-{
+    $dao = new Daopedido($base);
+
+    $daoT = new Daotatuador($base); 
 
 
-    $selec=$_POST["selec"];  
-
-    $estado=$_POST["estado"]; 
-    
-    foreach ($selec as $clave=>$valor  ) 
+    if (isset($_POST["Pedir"]) )
     {
+        $pedido = new pedido();
+
+        $id_usuario = $_SESSION["idUsuario"];
+        $id_tatuador = $daoT->idConIdUsuario($id_usuario);
+
+        $fecha = date("d-m-Y");
+        $estado = 0;
+        $colorSelec = $_POST['selec'];
+        $colorSeleccionado = "";
+
+        $colorSeleccionado = implode(',', array_keys($colorSelec));
+
+        $pedido->__SET("detalle",  $colorSeleccionado);
+        $pedido->__SET("fecha", $fecha);
+        $pedido->__SET("id_tatuador", $id_tatuador);
+        $pedido->__SET("estado", $estado);
+
+        $dao->Insertar($pedido);
+
+    }
+
         
-        $pedido= new pedido();
+    if (isset($_POST["Actualizar"])  && isset($_POST["selectPedido"]) )   
+    {
+
+
+        $selec=$_POST["selectPedido"];  
+
+        $estado=1; 
         
-        $pedido->__set("Id", $clave);
-        $pedido->__set("estado", $estado[$clave ]);
-        
-               
-        $dao->Actualizar($pedido);  
+        foreach ($selec as $clave=>$valor) 
+        {
+            
+            $pedido= new pedido();
+            
+            $pedido->__set("id", $clave);
+            $pedido->__set("estado", $estado);
+            
+                
+            $dao->Actualizar($pedido);  
+        }
         
     }
-    
-   
-}
+
+    $filtro = "";
+    if (isset($_POST['estado'])){
+
+        $filtro = $_POST['estado'];
+
+        
+
+    }
 
 
 ?>

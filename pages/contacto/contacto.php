@@ -1,6 +1,12 @@
 <?php 
 session_start();
-require_once("../../backend/login.php");?>
+require_once("../../backend/login.php");
+require_once "../../backend/admin/CRUDtatuador.php";
+require_once "../../backend/admin/DAOusuario.php";
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -9,10 +15,20 @@ require_once("../../backend/login.php");?>
     <title>Rosa Ink Studio</title>
     <link rel="icon" href="../../assets/icon/rosa.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="../../assets/css/new.css">
+    <!--Para el email-->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+    <!--Para el map-->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 
 
   </head>
@@ -26,13 +42,13 @@ require_once("../../backend/login.php");?>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">Home</a>
+            <a class="home nav-link" href="../../index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
+            <a class="tatuadores nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contacto.php">Contacto <span class="sr-only">(current)</span></a>
+            <a class="contacto nav-link" href="contacto.php">Contacto <span class="sr-only">(current)</span></a>
           </li>
           
           <?php
@@ -44,7 +60,7 @@ require_once("../../backend/login.php");?>
                         <a class="nav-link" href="../admin/gestion.php">Gestionar Tatuadores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/admin/gestionarPedidos.php">Gestionar Pedidos</a>
+                        <a class="nav-link" href="../admin/gestionarPedidos.php">Gestionar Pedidos</a>
                     </li>
                     ';
             }
@@ -112,49 +128,53 @@ require_once("../../backend/login.php");?>
 
     <!--FORMULARIO-->
     
-    <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <title>Formulario de Contacto</title>
-</head>
-<body>
 
     <div class="container mt-5">
-      <div class="row justify-content-center">
-        <form class="formularioContacto mt-4" style="width: 26rem;">
-        <h2>TEXTO EXPLICATIVO</h2>
-        <p>EXPLICAR MAS COSAS</p>
+        <div class="row">
 
-          <div data-mdb-input-init class="form-outline mb-4">
-            <label class="form-label" for="form4Example1">Nombre</label>
-            <input type="text" id="form4Example1" class="form-control" />
-          </div>
+            <div class="col-md-6">
+                <form class="formularioContacto mt-4" style="width: 26rem;">
+                <h2>Contáctanos</h2>
+                <p>Cualquier duda que tengas: precios, horarios, disponibilidad... Respondemos rápido.</p>
 
-          <div data-mdb-input-init class="form-outline mb-4">
-            <label class="form-label" for="form4Example2">Asunto</label>
-            <input type="text" id="form4Example2" class="form-control" />
-          </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                  <i class="fas fa-user"></i>
+                    <label class="form-label" for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control" />
+                  </div>
 
-          <div data-mdb-input-init class="form-outline mb-4">
-            <label class="form-label" for="form4Example3">Mensaje</label>
-            <textarea class="form-control" id="form4Example3" rows="4"></textarea>
-          </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <i class="fa-solid fa-envelope"></i>
+                    <label class="form-label" for="email">Email:</label>
+                    <input type="text" id="email" name="email" class="form-control" />
+                  </div>
 
-          <button type="button" class="btn btn-info btn-block mb-4" data-mdb-ripple-init>Enviar</button>
-        </form>
-      </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <label class="form-label" for="asunto">Asunto</label>
+                    <input type="text" id="asunto" name="asunto" class="form-control" />
+                  </div>
+
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <i class="fas fa-pencil"></i>
+                    <label class="form-label" for="mensaje">Mensaje</label>
+                    <textarea class="form-control" name="mensaje" id="mensaje" rows="4"></textarea>
+                  </div>
+                  <input type="hidden" id="to" value="<?php echo $dao->RecogerEmail(1); ?>"> <br>
+
+                  <button type="button" class="btn btn-info btn-block mb-4" data-mdb-ripple-init onclick="sendEmail();">
+                  <i class="fa-regular fa-paper-plane"></i>
+                  Enviar
+                  </button>
+                </form>
+            </div>
+
+            <div class="col-md-6 mt-5">
+                <h3>También atendemos dudas presencialmente:</h3>
+                <div id="mapaConJs"></div>
+            </div>
+        </div>
     </div>
-
-<!-- Bootstrap JS y Popper.js -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-</body>
-</html>
 
 
     
@@ -198,32 +218,24 @@ require_once("../../backend/login.php");?>
                           <i class="fab fa-twitter"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.google.es/" role="button">
                           <i class="fab fa-google"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.instagram.com/" role="button">
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
                   <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
-          <!--
-          <hr class="my-2" />
 
-          <section class="p-2 pt-0 ">
-              <div class="row d-flex align-items-center">
-                  <div class="col-md-7 col-lg-8 text-center text-md-start">
-                      AÑADIR AQUÍ POLÍTICA DE PRIVACIDAD O LO QUE TENGA QUE AÑADIR. HAY QUE INVESTIGAR
-                  </div>
-              </div>
-          </section>
-          -->
       </div>
     </footer>
 
-    <!-- Agrega los enlaces a los archivos JavaScript de Bootstrap y jQuery -->
+    
+    <script src="../../js/map.js"></script>
+    <script src="../../js/email.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
