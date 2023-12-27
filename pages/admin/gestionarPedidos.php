@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
   require_once "../../backend/admin/CRUDpedido.php";
   require_once "../../backend/admin/DAOpedido.php"; 
 ?>
@@ -27,10 +28,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">Home</a>
+            <a class="nav-link" href="../../index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../tatuadores/galeriaTatuador.php">Galeria</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
@@ -42,7 +46,7 @@
               echo '<li class="nav-item">
                         <a class="nav-link" href="gestion.php">Gestionar Tatuadores</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="gestionarPedidos.php">Gestionar Pedidos</a>
                     </li>
                     ';
@@ -78,18 +82,21 @@
       <?php
         $filtros = ["Todo", "Finalizado", "En curso"];
         echo " <select class='form-control ml-4 mt-4 selectPedido' name='estado' onChange='document.f1.submit();'>";
+        echo "<option value=''></option>";
+        
 
         foreach ($filtros as $clave=>$value)
         {
-            echo "<option value='$clave' ";
 
-            if (  $filtro==$clave)
-            {
-                echo " selected ";
-            }
+          echo "<option value='$clave' ";
+
+          if ($filtro==$clave)
+          {
+              echo " selected ";
+          }
 
 
-            echo "> $value </option>";
+          echo "> $value </option>";
 
         }
         echo "</select><br>";
@@ -113,7 +120,8 @@
         <tbody>
 
           <?php
-            if($filtro == 0){
+
+            if($filtro==0){
               $dao->Listar();
             }elseif($filtro==1){
               $dao->pedidoFinalizado();
@@ -121,21 +129,27 @@
               $dao->pedidoEnCurso();
             }
 
+            
+
             foreach ($dao->pedidos as $pedido) {
                 echo "<tr>"; 
                 echo "<td><input type='checkbox' name='selectPedido[".$pedido->__GET("id")."]'></td>";
 
+                $colores = explode(",",$pedido->__GET("detalle"));
+                //print_r($colores);
                 echo "<td><p>".$pedido->__GET("id")."</p></td>";
                 echo "<td><p>".$pedido->__GET("id_tatuador")."</p></td>";
-                echo "<td><p>".$pedido->__GET("detalle")."</p></td>";
+                echo "<td>";
+                foreach($colores as $color){
+                  echo "<div title=".$color." style='background-color:".$color."; width:30px; height:30px; display: inline-block;'></div>";
+                }
+                echo "</td>";
                 echo "<td><p>".$pedido->__GET("fecha")."</p></td>";
 
                 if ($pedido->__GET("estado") == 0){
-                    echo "<td><p>En curso</p>
-                    </td>";
+                    echo "<td><p>En curso</p> </td>";
                 } else {
-                    echo "<td><p>Finalizado</p>
-                    </td>";
+                    echo "<td><p>Finalizado</p></td>";
                 }
 
                 echo "</tr>"; 
@@ -191,16 +205,18 @@
                           <i class="fab fa-twitter"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.google.es/" role="button">
                           <i class="fab fa-google"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.instagram.com/" role="button">
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
+                  <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
+
       </div>
     </footer>
 

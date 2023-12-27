@@ -68,17 +68,40 @@ class Daousuario extends DB {
         
         public function Actualizar($usuario)   
         {
-            $consulta="update usuarios set :usuario,:password,:rol,:email  where id=:id ";
+            $consulta="UPDATE usuarios set usuario=:usuario, email=:email where id=:id ";
             
             $param=array(
+                ":id"=>$usuario->__get("id"),
                 ":usuario"=>$usuario->__get("usuario"),
-                ":password"=>$usuario->__get("password"),
-                ":rol"=>$usuario->__get("rol"),
                 ":email"=>$usuario->__get("email")
             );
             
             $this->ConsultaDatos($consulta, $param);  
            
+        }
+
+        public function RecogerEmail($id){
+
+            $consulta="select email from usuarios where id=$id";
+            
+            $param=array(); 
+            
+            $this->ConsultaDatos($consulta, $param);
+
+            return $this->filas[0]["email"];
+
+        }
+
+        public function RecogerRol($id){
+
+            $consulta="select rol from usuarios where id=$id";
+            
+            $param=array(); 
+            
+            $this->ConsultaDatos($consulta, $param);
+
+            return $this->filas[0]["rol"];
+
         }
               
     

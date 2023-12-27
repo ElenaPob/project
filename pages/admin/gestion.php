@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
   require_once "../../backend/admin/CRUDtatuador.php";
   require_once "../../backend/admin/DAOtatuador.php";
   require_once "../../backend/admin/DAOusuario.php"; 
@@ -28,10 +29,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">Home</a>
+            <a class="nav-link" href="../../index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../tatuadores/galeriaTatuador.php">Galeria</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
@@ -40,7 +44,7 @@
 
             // Verifica si el usuario está autenticado y tiene el rol de administrador
             if ($_SESSION["rol"] == "admin") {
-              echo '<li class="nav-item">
+              echo '<li class="nav-item active">
                       <a class="nav-link" href="gestion.php">Gestionar Tatuadores</a>
                     </li>
                     <li class="nav-item">
@@ -75,9 +79,9 @@
     
   
 
-    <form  name=f1 method="post" action='' enctype="multipart/form-data">
+    <form id="formUpdate" name=f1 method="post" action='' enctype="multipart/form-data">
 
-      <table class="table table-responsive" >
+      <table class="table table-responsive mt-4" >
         <thead class="bg-light">
           <tr>
             <th></th>
@@ -104,26 +108,30 @@
                 <div class="d-flex align-items-center">
                   <img src="../../assets/img/perfil/' . $tatuador->__GET("imagen") . '" alt="perfil" style="width: 45px; height: 45px" class="rounded-circle" />
                   <div class="ms-3">
-                    <input class="fw-bold mb-1" name=nombre value=' . $tatuador->__GET("nombre") . '>
-                    <input class="fw-bold mb-1" name=apellido value=' . $tatuador->__GET("apellido") . '>
-                    <input class="text-muted mb-0" type=text name=email value=' . $dao->RecogerEmail($tatuador->__GET("id_usuario")) . '>
+                    <span class="errorShow" style="color:red"></span>
+                    <input class="fw-bold mb-1" name=nombre['.$tatuador->__GET("id").'] value=' . $tatuador->__GET("nombre") . '>
+                    <span class="errorShow" style="color:red"></span>
+                    <input class="fw-bold mb-1" name=apellido['.$tatuador->__GET("id").'] value=' . $tatuador->__GET("apellido") . '>
+                    <span class="errorShow" style="color:red"></span>
+                    <input class="text-muted mb-0" type=text name=email['.$tatuador->__GET("id_usuario").'] value=' . $daoU->RecogerEmail($tatuador->__GET("id_usuario")) . '>
                   </div>
                 </div>
               </td>';
 
-              echo "<td><input type=text name=id[".$tatuador->__GET("id")."]  value=".$tatuador->__GET("id")." readonly=readonly></td>";
+              echo "<td><input type=text name=id value=".$tatuador->__GET("id")." readonly=readonly></td>";
 
-              echo "<td><input type=text name=rol value=".$dao->RecogerRol($tatuador->__GET("id_usuario"))."></td>";
+              echo "<td><input type=text name=rol[".$daoU->RecogerRol($tatuador->__GET("id_usuario"))."] value=".$daoU->RecogerRol($tatuador->__GET("id_usuario"))." readonly=readonly></td>";
               
-              echo "<td><input type=text name=estilo[".$tatuador->__GET("estilo")."] value=".$tatuador->__GET("estilo")."></td>";
-              echo " <td><textarea name=descripcion[" . $tatuador->__GET("descripcion") . "] class=form-control>" . $tatuador->__GET("descripcion") . "</textarea></td>";
+              echo "<td><input type=text name=estilo[".$tatuador->__GET("id")."] value=".$tatuador->__GET("estilo").">
+              <span class=errorShow style=color:red></span></td>";
+              echo " <td><textarea name=descripcion[".$tatuador->__GET("id")."] class=form-control>" . $tatuador->__GET("descripcion") . "</textarea><span class=errorShow style=color:red></span></td>";
              
               echo "<td><input class=form-control form-control-sm type=file name=LogoN[".$tatuador->__GET("id")."] </td>"; 
-              echo "<td><input type=hidden name=NomFot[".$tatuador->__GET('id') ."] value=".$tatuador->__GET("imagen"). ">";
-              echo "<td><input type=hidden name=id_usuario[".$tatuador->__GET("id_usuario")."] value=".$tatuador->__GET("id_usuario")."></td>";
-
-               
+              echo "<td><input type=hidden name=NomFot[".$tatuador->__GET("id")."] value=".$tatuador->__GET("imagen"). " required>";
+              echo "<td><input type=hidden name=id_usuario value=".$tatuador->__GET("id_usuario")."></td>";
               
+
+
               echo "</tr>"; 
               
           }
@@ -144,68 +152,7 @@
 
 
 
-      <!-- Modal de insertar -->
-      <div class="modal" id="insertarModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header bg-info">
-              <h5 class="modal-title text-white" id="modalInsertar">Insertar tatuador</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <?php
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="form4Example1">Email</label>
-                      <input type="text" name="emailNuevo" class="form-control" />
-                    </div>';
-
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Nombre</label>
-                        <input type="text" name="nombreNuevo" class="form-control" />
-                      </div>';
-                
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Apellido</label>
-                        <input type="text" name="apellidoNuevo" class="form-control" />
-                      </div>';
-                
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Estilo</label>
-                        <input type="text" name="estiloNuevo" class="form-control" />
-                      </div>';
-                
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Descripción</label>
-                        <textarea name="descNuevo" class="form-control" rows="4"></textarea>
-                      </div>';
-                
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Rol</label>
-                        <input type="text" name="rolNuevo" class="form-control" />
-                      </div>';
-                
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Contraseña</label>
-                        <input type="text" name="passwordNueva" class="form-control" />
-                      </div>';
-                
-                echo '<div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" for="form4Example1">Imagen</label>
-                        <input type="file" name="imagenNueva" class="form-control" />
-                      </div>';
-
-              ?>
-              
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-              <input type="submit" name=Insertar class="btn btn-info"  value=Insertar>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       <!-- Modal de eliminar -->
       <div class="modal" id="borrarModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -228,11 +175,83 @@
         </div>
       </div>
 
-
-
-
-
     </form>
+
+
+        <!-- Modal de insertar -->
+        <div class="modal" id="insertarModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-info">
+                <h5 class="modal-title text-white" id="modalInsertar">Insertar tatuador</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              <form name=f2 id="formularioInsertar" method="post" action='' enctype="multipart/form-data">
+
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Email</label>
+                    <input type="text" name="emailNuevo" class="form-control" />
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Nombre</label>
+                    <input type="text" name="nombreNuevo" class="form-control"/>
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Apellido</label>
+                    <input type="text" name="apellidoNuevo" class="form-control" />
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Estilo</label>
+                    <input type="text" name="estiloNuevo" class="form-control" />
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Descripción</label>
+                    <textarea name="descNuevo" class="form-control" rows="4"></textarea>
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Rol</label>
+                    <input type="text" name="rolNuevo" class="form-control" value="tatuador" readonly=readonly/>
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Contraseña</label>
+                    <input type="text" name="passwordNueva" class="form-control" />
+                    <span class="errorShow" style="color:red"></span>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="form4Example1">Imagen</label>
+                    <input type="file" name="imagenNueva" class="form-control" required/>
+                  </div>
+                
+              </div>
+                <span class="errorForm text-center" style="color:red"></span>
+              <div class="modal-footer">
+                
+                <input type="submit" name=Insertar class="btn btn-info" id="submitButton" value=Insertar>
+              
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+    
+    
 
     
     <!--FOOTER-->
@@ -275,18 +294,23 @@
                           <i class="fab fa-twitter"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.google.es/" role="button">
                           <i class="fab fa-google"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.instagram.com/" role="button">
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
+                  <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
+
       </div>
     </footer>
+
+    <script src="../../js/validate.js"></script>
+
 
     <!-- Agrega los enlaces a los archivos JavaScript de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

@@ -1,61 +1,76 @@
 <?php
 
+require_once("admin/LibreriaPDO.php");
+session_start();
+
+
     $login = false;
 
-    require_once("admin/LibreriaPDO.php");
 
-    if (isset($_POST["login"])){
-        
-        if (isset($_POST["password"]) && isset($_POST["usuario"]) && !empty($_POST["password"]) && !empty($_POST["usuario"]))
-        {
 
-            
-            $usuario = $_POST["usuario"];
-            $password= $_POST["password"];
-        
+    $mensaje ="";
 
-            $conn = new DB ("estudiotat");
 
-            
 
-            $consulta = "SELECT * FROM usuarios WHERE usuario=:usuario";
+    if (isset($_POST["password"]) && isset($_POST["usuario"]))
+    {
 
-            $param = [ 
-                ":usuario"=>$usuario
-            ];
+        $usuario = $_POST["usuario"];
+        $password= $_POST["password"];
+    
 
-            $autenticacionFallida = true; 
-
-            $conn->consultaDatos($consulta, $param);
+        $conn = new DB ("estudiotat");
 
         
 
-            if ($conn->filas[0]["rol"] === "admin" && $conn->filas[0]["password"] == $password ){
+        $consulta = "SELECT * FROM usuarios WHERE usuario=:usuario";
 
-                $login = true;
-                $_SESSION["nombre"] = $conn->filas[0]["usuario"];
-                $_SESSION["rol"] = $conn->filas[0]["rol"];;
+        $param = [ 
+            ":usuario"=>$usuario
+        ];
 
-                $autenticacionFallida = false; 
+        $autenticacionFallida = true; 
+        
 
-            
+        $conn->consultaDatos($consulta, $param);
 
-            }
+        $mensaje = "Usuario o contraseña incorrectos";
 
+        if ($conn->filas[0]["rol"] === "admin" && $conn->filas[0]["password"] == $password ){
 
-            if ($conn->filas[0]["rol"] === "tatuador" && password_verify($password,$conn->filas[0]["password"] ) ){
+            $login = true;
+            $_SESSION["nombre"] = $conn->filas[0]["usuario"];
+            $_SESSION["rol"] = $conn->filas[0]["rol"];;
 
-                $login = true;
-                $_SESSION["idUsuario"] = $conn->filas[0]["id"];
-                $_SESSION["rol"] = $conn->filas[0]["rol"];;
+            $autenticacionFallida = false; 
 
-                $autenticacionFallida = false; 
-
-            }
+            $mensaje = "";
 
         }
 
+
+        if ($conn->filas[0]["rol"] === "tatuador" && password_verify($password,$conn->filas[0]["password"] ) ){
+
+            $login = true;
+            $_SESSION["idUsuario"] = $conn->filas[0]["id"];
+            $_SESSION["rol"] = $conn->filas[0]["rol"];;
+
+            $autenticacionFallida = false; 
+            $mensaje = "";
+
+        }
+
+      if ($autenticacionFallida)  {
+        
+        $data = array('mensaje' => $mensaje, 'autenticacion'=>$autenticacionFallida);
+        //print_r($data);
+        header('Content-Type: application/json');
+        echo json_encode($data);
+
+      }
+
     }
+
 
 
 

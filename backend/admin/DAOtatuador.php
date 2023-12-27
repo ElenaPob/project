@@ -61,30 +61,6 @@
 
             }
 
-            public function RecogerEmail($id){
-
-                $consulta="select email from usuarios where id=$id";
-                
-                $param=array(); 
-                
-                $this->ConsultaDatos($consulta, $param);
-
-                return $this->filas[0]["email"];
-
-            }
-
-            public function RecogerRol($id){
-
-                $consulta="select rol from usuarios where id=$id";
-                
-                $param=array(); 
-                
-                $this->ConsultaDatos($consulta, $param);
-
-                return $this->filas[0]["rol"];
-
-            }
-
 
             public function ConseguirEstilos(){
 
@@ -129,7 +105,8 @@
             
             public function Actualizar($tatuador) 
             {
-                $consulta="update tatuadores set :nombre,:apellido,:estilo,:descripcion,:id_usuario,:imagen  where id=:id ";
+
+                $consulta="UPDATE tatuadores set nombre=:nombre,apellido=:apellido,estilo=:estilo,descripcion=:descripcion,imagen=:imagen  where id=:id ";
                 
                 $param=array(
                     ":id"=>$tatuador->__get("id"),
@@ -137,11 +114,11 @@
                     ":apellido"=>$tatuador->__get("apellido"),
                     ":estilo"=>$tatuador->__get("estilo"),
                     ":descripcion"=>$tatuador->__get("descripcion"),
-                    ":id_usuario"=>$tatuador->__get("id_usuario"),
                     ":imagen"=>$tatuador->__get("imagen")
                 );
                 
                 $this->ConsultaDatos($consulta, $param);
+                
             
             }
         

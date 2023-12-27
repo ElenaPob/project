@@ -1,6 +1,5 @@
 <?php 
 session_start();
-
 require_once "../../backend/admin/CRUDpedido.php";
 ?>
 <!DOCTYPE html>
@@ -15,7 +14,7 @@ require_once "../../backend/admin/CRUDpedido.php";
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="../../assets/css/new.css">
-
+  
 
   </head>
     
@@ -27,11 +26,14 @@ require_once "../../backend/admin/CRUDpedido.php";
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">Home</a>
+          <li class="nav-item ">
+            <a class="nav-link" href="../../index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../tatuadores/galeriaTatuador.php">Galeria</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
@@ -44,8 +46,8 @@ require_once "../../backend/admin/CRUDpedido.php";
               echo '<li class="nav-item">
                         <a class="nav-link" href="galeria.php">Gestionar Galería</a>
                     </li>
-                    <li class="nav-item">
-                          <a class="nav-link" href="pedido.php">Hacer Pedido</a>
+                    <li class="nav-item active">
+                          <a class="nav-link " href="pedido.php">Hacer Pedido</a>
                     </li>
                     ';
           }
@@ -72,34 +74,83 @@ require_once "../../backend/admin/CRUDpedido.php";
     <!--INTERIOR-->
     
     <div class="container mt-5">
-      <form  name=f1 method="post" action='' enctype="multipart/form-data">
-          <h2>Selecciona el color que quieras pedir</h2>
+    <form name="f1" method="post" action="" enctype="multipart/form-data">
+        <h2>Selecciona los colores que quieras pedir</h2>
+        <hr class="divider">
 
-          <table class="table">
-              <thead>
-                  <tr>
-                      <th></th>
-                      <th>Color</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <?php
-                     $colores = array('#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff');
-                    foreach ($colores as $color) {
-                        echo '<tr>';
-                        //$color=explode(" ",$color);
-                        //echo "<td><input type='checkbox' name='Selec[".trim($color[0])."]'>$color[1]</td>";
-                        echo '<td><input type="checkbox" name="selec[' . $color . ']"></td>';
-                        echo '<td style="background-color:' . $color . '; width:30px; height:30px;"></td>';
-                        echo '</tr>';
-                    }
-                  ?>
-              </tbody>
-          </table>
+        <div class="d-inline-block">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Color</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $colores = array('#ff00ff', '#0000ff', '#00ff00', '#ffff00', '#ff0000');
+                        foreach ($colores as $color) {
+                            echo '<tr>';
+                            echo '<td><input type="checkbox" name="selec[' . $color . ']"></td>';
+                            echo '<td style="background-color:' . $color . '; width:30px; height:30px;"></td>';
+                            echo '</tr>';
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
-          <input type="submit" name=Pedir class="btn btn-info"  value="Hacer Pedido">
-        </form>
-    </div>
+        <div class="d-inline-block ml-4">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Color</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $colorines = array('#7D3C98', '#9A7D0A', '#808B96', '#17202A', '#922B21');
+                        foreach ($colorines as $color) {
+                            echo '<tr>';
+                            echo '<td><input type="checkbox" name="selec[' . $color . ']"></td>';
+                            echo '<td style="background-color:' . $color . '; width:30px; height:30px;"></td>';
+                            echo '</tr>';
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-inline-block ml-4">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Color</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $colors = array('#D2B4DE', '#A9CCE3', '#D0ECE7', '#FCF3CF', '#F6DDCC');
+                        foreach ($colors as $color) {
+                            echo '<tr>';
+                            echo '<td><input type="checkbox" name="selec[' . $color . ']"></td>';
+                            echo '<td style="background-color:' . $color . '; width:30px; height:30px;"></td>';
+                            echo '</tr>';
+                        }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <input type="submit" name="Pedir" class="btn btn-info" value="Hacer Pedido">
+            </div>
+        </div>
+    </form>
+</div>
 
     
     <!--FOOTER-->
@@ -142,16 +193,18 @@ require_once "../../backend/admin/CRUDpedido.php";
                           <i class="fab fa-twitter"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.google.es/" role="button">
                           <i class="fab fa-google"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.instagram.com/" role="button">
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
+                  <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
+
       </div>
     </footer>
 

@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once("../../backend/login.php");
+//require_once "../../backend/login.php";
 require_once "../../backend/admin/CRUDtatuador.php";
 require_once "../../backend/admin/DAOusuario.php";
 
@@ -20,6 +20,7 @@ require_once "../../backend/admin/DAOusuario.php";
      crossorigin=""/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <link rel="stylesheet" href="../../assets/css/new.css">
     <!--Para el email-->
@@ -41,14 +42,17 @@ require_once "../../backend/admin/DAOusuario.php";
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="home nav-link" href="../../index.php">Home</a>
+          <li class="nav-item ">
+            <a class="home nav-link" href="../../index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="tatuadores nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
           </li>
           <li class="nav-item">
-            <a class="contacto nav-link" href="contacto.php">Contacto <span class="sr-only">(current)</span></a>
+            <a class="tatuadores nav-link" href="../tatuadores/galeriaTatuador.php">Galeria</a>
+          </li>
+          <li class="nav-item active">
+            <a class="contacto nav-link" href="contacto.php">Contacto</a>
           </li>
           
           <?php
@@ -87,7 +91,7 @@ require_once "../../backend/admin/DAOusuario.php";
             </a>';
           }else{
             echo '<button class="btn btn-outline-light btn-rounded ml-auto" data-mdb-ripple-init data-mdb-ripple-color="dark"
-            data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>';
+            data-toggle="modal" data-target="#loginModal" onclick="openForm()">Iniciar Sesión</button>';
           }
 
 
@@ -97,32 +101,26 @@ require_once "../../backend/admin/DAOusuario.php";
     </nav>
 
     <!--FORMULARIO LOGIN-->
-    <div class="modal rounded-5" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-info">
-                    <h5  class="modal-title text-white" id="loginModalLabel">Iniciar Sesión</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-            
-                        <div class="form-group">
-                            <label for="usuario">Usuario</label>
-                            <input name="usuario" type="text" class="form-control" id="usuario" placeholder="Introduce tu usuario">
-                        </div>
-                        <div class="form-group">
-                            <label for="contraseña">Contraseña:</label>
-                            <input name="password" type="password" class="form-control" id="password" placeholder="Introduce tu contraseña">
-                        </div>
-                        <button name="login" type="submit" class="btn btn-outline-info btn-rounded" data-mdb-ripple-init data-mdb-ripple-color="dark">Iniciar Sesión</button>
 
-                    </form>
-                </div>
+    <div id="formularioDeLogin" class="form-popup">
+        <form name=f1 id="loginForm"  class="form-container" method="POST">
+        <h3>Iniciar Sesión</h3>
+        <hr class="divider">
+            <i class="fas fa-user"></i>
+            <label>Usuario:</label>
+            <input class="form-control validate" type="text" id="usuario" name="usuario" required>
+            <br>
+            <i class="fas fa-lock"></i>
+            <label>Contraseña:</label>
+            <input class="form-control validate" type="password" id="password" name="password" required>
+            <br>
+            <div id="error-message" class="alert" role="alert">
+            <div id="result"></div>
             </div>
-        </div>
+            <button id="login" name="login" type="submit" class="btn btn-outline-info btn-rounded">Iniciar Sesión</button>
+            <button class="btn btn-outline-danger btn-rounded" onclick="closeForm()">Cerrar</button>
+        </form>
+        
     </div>
 
 
@@ -133,36 +131,42 @@ require_once "../../backend/admin/DAOusuario.php";
         <div class="row">
 
             <div class="col-md-6">
-                <form class="formularioContacto mt-4" style="width: 26rem;">
+                <form id="formularioContacto" class="formularioContacto mt-4" style="width: 26rem;">
                 <h2>Contáctanos</h2>
                 <p>Cualquier duda que tengas: precios, horarios, disponibilidad... Respondemos rápido.</p>
 
                   <div data-mdb-input-init class="form-outline mb-4">
                   <i class="fas fa-user"></i>
                     <label class="form-label" for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control" />
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: María"/>
+                    <span class="errorShow" style="color:red"></span>
                   </div>
 
                   <div data-mdb-input-init class="form-outline mb-4">
                     <i class="fa-solid fa-envelope"></i>
                     <label class="form-label" for="email">Email:</label>
-                    <input type="text" id="email" name="email" class="form-control" />
+                    <input type="text" id="email" name="email" class="form-control" placeholder="Ej: maría@gmail.com"/>
+                    <span class="errorShow" style="color:red"></span>
                   </div>
 
                   <div data-mdb-input-init class="form-outline mb-4">
                     <i class="fa-solid fa-lightbulb"></i>
                     <label class="form-label" for="asunto">Asunto</label>
-                    <input type="text" id="asunto" name="asunto" class="form-control" />
+                    <input type="text" id="asunto" name="asunto" class="form-control" placeholder="Ej: Precio, cita..."/>
+                    <span class="errorShow" style="color:red"></span>
                   </div>
 
                   <div data-mdb-input-init class="form-outline mb-4">
                     <i class="fas fa-pencil"></i>
                     <label class="form-label" for="mensaje">Mensaje</label>
-                    <textarea class="form-control" name="mensaje" id="mensaje" rows="4"></textarea>
+                    <textarea class="form-control" name="mensaje" id="mensaje" rows="4" placeholder="Exposición de la idea o pregunta."></textarea>
+                    <span class="errorShow" style="color:red"></span>
                   </div>
-                  <input type="hidden" id="to" value="<?php echo $dao->RecogerEmail(1); ?>"> <br>
+                  <input type="hidden" id="to" value="<?php echo $daoU->RecogerEmail(1); ?>"> <br>
 
-                  <button type="button" class="btn btn-info btn-block mb-4" data-mdb-ripple-init onclick="sendEmail();">
+                  <span class="errorForm text-center" style="color:red"></span>
+                  <span class="succesForm text-center" style="color:green"></span>
+                  <button type="submit" class="btn btn-info btn-block mb-4">
                   <i class="fa-regular fa-paper-plane"></i>
                   Enviar
                   </button>
@@ -170,7 +174,7 @@ require_once "../../backend/admin/DAOusuario.php";
             </div>
 
             <div class="col-md-6 mt-5">
-                <h3>También atendemos dudas presencialmente:</h3>
+                <h3>También atendemos dudas en nuestro estudio:</h3>
                 <div id="mapaConJs"></div>
             </div>
         </div>
@@ -233,10 +237,33 @@ require_once "../../backend/admin/DAOusuario.php";
       </div>
     </footer>
 
-    
+
+    <script src="../../js/validateContact.js" ></script>
+    <script src="../../js/popup.js" ></script>
     <script src="../../js/map.js"></script>
-    <script src="../../js/email.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <script>
+      $("#loginForm").submit(function (event) {
+          event.preventDefault();
+          var formData = $(this).serialize();
+          $.ajax({
+              type: "POST",
+              url: "../../backend/login.php",
+              data: formData,
+              success: function (response) {
+                  console.log(response);
+                  //Recargar la página para que inicie sesión
+                  location.reload();
+                  $("#result").html(response);
+              }, error: function() {
+                  // Lo que quiero que se me muestre cuando no pasa
+                  $("#result").text("Contraseña o usuario incorrecto.");
+                  $("#result").css("color","red");
+              }
+          });
+      });
+    </script> 
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

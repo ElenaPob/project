@@ -20,9 +20,7 @@ Solo habrá un único administrador del sitio.
 ## Despliegue
 
 Esta aplicación está subida a un servidor y para entrar se necesita este link:
-
-https://estudio-de-tatuajes.000webhostapp.com/
-
+https://tandem-densities.000webhostapp.com/
 
 ## Support
 

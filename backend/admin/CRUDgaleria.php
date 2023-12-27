@@ -5,7 +5,7 @@
 
     $base="estudiotat";
     
-    $dao = new Daogaleria($base);
+    $daoG = new Daogaleria($base);
 
     $daoT = new Daotatuador($base); 
 
@@ -38,7 +38,7 @@
         
         $galeria->__SET("imagen",$NombreImagen );
         
-        $dao->Insertar($galeria);
+        $daoG->Insertar($galeria);
         
     }
 
@@ -50,10 +50,15 @@
 
         foreach ($selec as $clave=>$valor  )  
         { 
-            $dao->Borrar($clave);
+            $daoG->Borrar($clave);
             
         }
         
+    }
+
+    $idTatuador = "";
+    if (isset($_POST['selecGaleria'])){
+        $idTatuador = $_POST['selecGaleria'];
     }
         
 

@@ -28,10 +28,13 @@ require_once "../../backend/admin/DAOgaleria.php";
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="../../index.php">Home</a>
+            <a class="nav-link" href="../../index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../tatuadores/tatuadores.php">Tatuadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../tatuadores/galeriaTatuador.php">Galeria</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto.php">Contacto</a>
@@ -41,8 +44,8 @@ require_once "../../backend/admin/DAOgaleria.php";
 
           // Verifica si el usuario está autenticado y tiene el rol de tatuador
           if ($_SESSION["rol"] == "tatuador") {
-              echo '<li class="nav-item">
-                        <a class="nav-link" href="galeria.php">Gestionar Galería</a>
+              echo '<li class="nav-item active">
+                        <a class="nav-link " href="galeria.php">Gestionar Galería</a>
                     </li>
                     <li class="nav-item">
                           <a class="nav-link" href="pedido.php">Hacer Pedido</a>
@@ -71,25 +74,26 @@ require_once "../../backend/admin/DAOgaleria.php";
 
     <!--INTERIOR-->
 
+    <form id="formularioGaleria" name=f2 method="post" action='' enctype="multipart/form-data">
+        <div data-mdb-input-init class="form-outline mb-4 mt-5 ml-4">
+          <label class="form-label" for="form4Example1">Imagen para añadir:</label>
+          <input type="file" name="imagenNueva" class="form-control" required />
+        </div>
+
+        <input type="submit" name=Insertar class="btn btn-info mb-5 ml-4"  value="Insertar">
+    </form>
+
     <form  name=f1 method="post" action='' enctype="multipart/form-data">
       <div class="container mt-5">
       
-        <?php
-
-              echo '<div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="form4Example1">Imagen para añadir:</label>
-                  <input type="file" name="imagenNueva" class="form-control" />
-                </div>';
-
-
-        ?>
-        <input type="submit" name=Insertar class="btn btn-info mb-5"  value="Insertar">
+        
         <div class="row">
           <?php
            
-            $dao->Listar(); 
+            $id_tatuador=$daoT->idConIdUsuario($_SESSION["idUsuario"]);
+            $daoG->GestionarGaleria($id_tatuador); 
 
-            foreach ($dao->galerias as $galeria) {
+            foreach ($daoG->galerias as $galeria) {
               echo '<div class="col-md-3 galeria-item">'; // Ajusta el número de columnas según tus necesidades
               echo "<input type='checkbox' name='selec[" . $galeria->__GET("id") . "]' id='checkbox-" . $galeria->__GET("id") . "'>";
 
@@ -152,16 +156,18 @@ require_once "../../backend/admin/DAOgaleria.php";
                           <i class="fab fa-twitter"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.google.es/" role="button">
                           <i class="fab fa-google"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.instagram.com/" role="button">
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
+                  <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
+
       </div>
     </footer>
 

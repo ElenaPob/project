@@ -30,6 +30,29 @@ class Daogaleria extends DB {
 
         }
 
+        public function GestionarGaleria($id_tatuador)
+        {
+            $this->galerias=array();  
+            
+            $consulta="SELECT * FROM galeria where id_tatuador=$id_tatuador";
+            
+            $param=array(); 
+            
+            $this->ConsultaDatos($consulta, $param);
+
+            foreach ($this->filas as $fila)
+            {
+                $galeria=new galeria();      
+                
+                $galeria->__SET("id",$fila['id']);           
+                $galeria->__SET("imagen",$fila['imagen']);
+                $galeria->__SET("id_tatuador",$fila['id_tatuador']);  
+            
+                $this->galerias[]=$galeria;          
+            }
+
+        }
+
 
         public function Insertar($galeria)  
         {

@@ -1,6 +1,7 @@
 <?php
-  session_start();
-  require_once("backend/login.php");
+session_start();
+//require_once "backend/login.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Rosa Ink Studio</title>
     <link rel="icon" href="assets/icon/rosa.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/css/new.css"/>
@@ -24,10 +26,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a  class="home nav-link" href="#">Home</a>
+            <a  class="home nav-link" href="#">Inicio</a>
           </li>
           <li class="nav-item">
             <a  class="tatuadores nav-link" href="pages/tatuadores/tatuadores.php">Tatuadores</a>
+          </li>
+          <li class="nav-item">
+            <a  class="galeria nav-link" href="pages/tatuadores/galeriaTatuador.php">Galeria</a>
           </li>
           <li class="nav-item">
             <a class="contacto nav-link" href="pages/contacto/contacto.php">Contacto</a>
@@ -83,26 +88,21 @@
     <!--FORMULARIO LOGIN-->
 
     <div id="formularioDeLogin" class="form-popup">
-        
-        <form class="form-container" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <form name=f1 id="loginForm"  class="form-container" method="POST">
         <h3>Iniciar Sesión</h3>
         <hr class="divider">
             <i class="fas fa-user"></i>
-            <label for="usuario">Usuario:</label>
+            <label>Usuario:</label>
             <input class="form-control validate" type="text" id="usuario" name="usuario" required>
             <br>
             <i class="fas fa-lock"></i>
-            <label for="password">Contraseña:</label>
+            <label>Contraseña:</label>
             <input class="form-control validate" type="password" id="password" name="password" required>
             <br>
-            <?php
-              
-              if (isset($autenticacionFallida) && $autenticacionFallida) {
-                echo '<div class="alert alert-danger" role="alert">Usuario o contraseña incorrectos.</div>';
-              }
-            ?>
-
-            <button name="login" type="submit" class="btn btn-outline-info btn-rounded" data-mdb-ripple-init data-mdb-ripple-color="dark">Iniciar Sesión</button>
+            <div id="error-message" class="alert" role="alert">
+            <div id="result"></div>
+            </div>
+            <button id="login" name="login" type="submit" class="btn btn-outline-info btn-rounded" >Iniciar Sesión</button>
             <button class="btn btn-outline-danger btn-rounded" onclick="closeForm()">Cerrar</button>
         </form>
         
@@ -115,89 +115,98 @@
     <hr class="divider">
 
     <div class="container">
-      <div class="row">
+    <div class="row justify-content-center align-items-center">
 
-        <div class="col-md-6">
-          <h4 class="ml-4">SERVICIOS QUE OFRECEMOS</h4>
-          <ul class="list-unstyled ml-4">
-            <li class="d-flex align-items-center mb-3">
-              <i class="fa-solid fa-briefcase fa-2x mr-3"></i> 
-              <div>
-                <p class="lead mb-0 font-weight-medium">Profesionalidad</p>
-                <small class="text-body-secondary">Con texto secundario descolorido</small>
-              </div>
-            </li>
-            <li class="d-flex align-items-center mb-3">
-              <i class="fa-solid fa-street-view fa-2x mr-3"></i>
-              <div>
-                <p class="mb-0">Atención personalizada</p>
-                <small class="text-body-secondary">Con texto secundario descolorido</small>
-              </div>
-            </li>
-            <li class="d-flex align-items-center mb-3">
-              <i class="fa-regular fa-comments fa-2x mr-3"></i> 
-              <div>
-                <p class="mb-0">Seguimiento</p>
-                <small class="text-body-secondary">Con texto secundario descolorido</small>
-              </div>
-            </li>
-            <li class="d-flex align-items-center">
-              <i class="fa-solid fa-hand-sparkles fa-2x mr-3"></i> 
-              <div>
-                <p class="mb-0">Máxima higiene</p>
-                <small class="text-body-secondary">Con texto secundario descolorido</small>
-              </div>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="col-md-6">
-          <div class="bg-image">
-            <img src="assets/img/studio/estudio2.jpg" class="w-100 imagenPregunta" alt="Estudio de tatuaje" />
-            <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.6)">
-              <div class="d-flex flex-column justify-content-center align-items-center h-100">
-                <h5 class="text-white mb-3">¿Tienes dudas?</h5>
-                <a href="pages/contacto/contacto.php">
-                  <button type="button" class="btn btn-info" data-mdb-ripple-init>Pregunta</button>
-                </a>
-              </div>
+      <div class="col-md-6">
+        <h4 class="ml-4">¿QUÉ OFRECEMOS?</h4>
+        <ul class="list-unstyled ml-4">
+          <li class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-briefcase fa-2x mr-3"></i> 
+            <div>
+              <p class="mb-0">Profesionalidad</p>
+              <small class="text-body-secondary">Tomar la decisión de qué tatuarse puede ser desafiante, pero con nuestra experiencia, te asistiremos en la elección del diseño, la ubicación, el color o el sombreado que mejor se adapten a tus preferencias.</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-street-view fa-2x mr-3"></i>
+            <div>
+              <p class="mb-0">Atención personalizada</p>
+              <small class="text-body-secondary">Convertimos tu idea en una realidad. Solicita una visita previa para que podamos conocerte, comprender tus gustos y reflejar tu esencia en tu nuevo tatuaje.</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fa-regular fa-comments fa-2x mr-3"></i> 
+            <div>
+              <p class="mb-0">Seguimiento</p>
+              <small class="text-body-secondary">Te guiaremos a través del proceso de curación, y estaremos a tu disposición para responder cualquier pregunta que puedas tener.</small>
+            </div>
+          </li>
+          <li class="d-flex align-items-center">
+            <i class="fa-solid fa-hand-sparkles fa-2x mr-3"></i> 
+            <div>
+              <p class="mb-0">Máxima higiene</p>
+              <small class="text-body-secondary"> Contamos con la certificación en higiene sanitaria. Utilizamos exclusivamente material desechable y de un solo uso en todas nuestras prácticas.</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-6 mt-3">
+        <div class="bg-image">
+          <img src="assets/img/studio/estudio2.jpg" class="w-100 imagenPregunta" alt="Estudio de tatuaje" />
+          <div class="mask" style="background-color: hsla(0, 0%, 0%, 0.6)">
+            <div class="d-flex flex-column justify-content-center align-items-center h-100">
+              <h5 class="text-white mb-3">¿Tienes dudas?</h5>
+              <a href="pages/contacto/contacto.php">
+                <button type="button" class="btn btn-info" data-mdb-ripple-init>Pregunta</button>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <br>
+  </div>
 
-    <hr class="indice-divider">
-    <div class="primera row">
-      <div class="col-md-3">
+  <br>
+
+  <hr class="indice-divider">
+
+  <div class="margenesizquierda">
+    <div class="row justify-content-center align-items-center md-2 primera">
+
+      <div class="col-md-5">
         <h2 class="indice-heading">Sobre Nosotros</h2>
         <p class="lead">Explora nuestras experiencias y descubre lo que podemos ofrecerte. Más detalles al pulsar el botón.</p>
-        <a href="pages/contacto/contacto.php">
+        <a href="pages/tatuadores/tatuadores.php">
           <button type="button" class="btn btn-info" data-mdb-ripple-init>Conocer</button>
         </a>
       </div>
-      <div class="col-md-9">
+
+      <div class="col-md-7">
         <img class="indice-image img-fluid " src="assets/img/studio/estudio4.jpg" alt="Calle del estudio">
       </div>
     </div>
 
     <hr class="indice-divider">
-    <div class="primera row">
-      <div class="col-md-3">
-        <h2 class="indice-heading">Pide presupuesto
-          <br>
-          <span class="text-muted">sin compromiso</span>
-        </h2>
-        <p class="lead"> Rellena nuestro formulario con la idea que tengas y te daremos un presupuesto aproximado.</p>
-        <a href="pages/contacto/contacto.php">
-          <button type="button" class="btn btn-info" data-mdb-ripple-init>Rellenar</button>
-        </a>
+
+    
+  </div>
+
+  <div class="margenesizquierda">
+    <div class="row justify-content-center align-items-center md-2 primera">
+        <div class="col-md-5">
+          <h2 class="indice-heading">Pide presupuesto <br> <span class="text-muted">sin compromiso</span></h2>
+          <p class="lead"> Rellena nuestro formulario con la idea que tengas y te daremos un presupuesto aproximado.</p>
+          <a href="pages/contacto/contacto.php">
+            <button type="button" class="btn btn-info" data-mdb-ripple-init>Rellenar</button>
+          </a>
+        </div>
+
+        <div class="col-md-7">
+          <img class="indice-image img-fluid " src="assets/img/studio/estudio5.jpg" alt="Calle del estudio2">
+        </div>
       </div>
-      <div class="col-md-9">
-        <img class="indice-image img-fluid " src="assets/img/studio/estudio5.jpg" alt="Calle del estudio2">
-      </div>
-    </div>
+  </div>
 
     
     
@@ -241,49 +250,29 @@
                           <i class="fab fa-twitter"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.google.es/" role="button">
                           <i class="fab fa-google"></i>
                       </a>
 
-                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" role="button">
+                      <a class="btn btn-outline-light btn-floating m-1 btn-sm" href="https://www.instagram.com/" role="button">
                           <i class="fab fa-instagram"></i>
                       </a>
                   </div>
                   <hr class="w-100 clearfix d-md-none" />
               </div>
           </section>
-          <!--
-          <hr class="my-2" />
 
-          <section class="p-2 pt-0 ">
-              <div class="row d-flex align-items-center">
-                  <div class="col-md-7 col-lg-8 text-center text-md-start">
-                      AÑADIR AQUÍ POLÍTICA DE PRIVACIDAD O LO QUE TENGA QUE AÑADIR. HAY QUE INVESTIGAR
-                  </div>
-              </div>
-          </section>
-          -->
       </div>
     </footer>
 
-    <script>
-
-        function openForm() {
-          document.getElementById("formularioDeLogin").style.display = "block";
-        }
-
-        function closeForm() {
-          document.getElementById("formularioDeLogin").style.display = "none";
-        }
-
-    </script>
+    <script src="js/popup.js" ></script>
+    <script src="js/js.js"></script>
 
    
     <!-- Agrega los enlaces a los archivos JavaScript de Bootstrap y jQuery -->
-    <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/6f1c8192e7.js" crossorigin="anonymous"></script>
 
   </body>
 

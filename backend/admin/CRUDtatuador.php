@@ -1,8 +1,8 @@
 <?php 
  
-require_once 'Daotatuador.php';  
-require_once 'Daousuario.php'; 
-require_once 'Daogaleria.php';   
+require_once 'DAOtatuador.php';  
+require_once 'DAOusuario.php'; 
+require_once 'DAOgaleria.php';   
 
 $base="estudiotat";
  
@@ -84,7 +84,7 @@ if (isset($_POST["Borrar"])  && isset($_POST["selec"]))
     
 if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )   
 {
-    $selec=$_POST["selec"];  
+    $selec=$_POST["selec"];
     
     $nombre=$_POST["nombre"];
     $apellido=$_POST["apellido"];
@@ -92,40 +92,48 @@ if (isset($_POST["Actualizar"])  && isset($_POST["selec"]) )
     $descripcion=$_POST["descripcion"];
 
     $email=$_POST["email"];
-    $rol=$_POST["rol"];
     
     $NomFot=$_POST["NomFot"];  
     
     foreach ($selec as $clave=>$valor  ) 
     {
-        
+         
         $tatuador= new tatuador();
         
         $tatuador->__SET("id", $clave);
-        $tatuador->__SET("nombre", $nombre);
-        $tatuador->__SET("apellido", $apellido);
-        $tatuador->__SET("estilo", $estilo);
-        $tatuador->__SET("descripcion", $descripcion);
+        $tatuador->__SET("nombre", $nombre[$clave]);
+        $tatuador->__SET("apellido", $apellido[$clave]);
+        $tatuador->__SET("estilo", $estilo[$clave]);
+        $tatuador->__SET("descripcion", $descripcion[$clave]);
+
         
         
-        if (!empty($_FILES['imagenNueva']['name'])    )  
+        if (!empty($_FILES['LogoN']['name'][$clave])    )  
         {
-            $NombreImagen = $_FILES['LogoN']['name'];  
+            $NombreImagen = $_FILES['LogoN']['name'][$clave];  
             
-            $RutaTemp = $_FILES['LogoN']['tmp_name'];  
+            $RutaTemp = $_FILES['LogoN']['tmp_name'][$clave];  
             
             copy($RutaTemp,"../../assets/img/perfil/$NombreImagen");
             
-            $tatuador->__SET("imagen", $NombreImagen );  
+            $tatuador->__SET("imagen", $NombreImagen);  
         }
         else 
         {
 
-            $tatuador->__SET("imagen", $NomFot); 
+            $tatuador->__SET("imagen", $NomFot[$clave]); 
         }
+   
+        $dao->Actualizar($tatuador); 
+
+        $id_Usuario = $dao->CogerIdUsuario($clave);  
+
+        $usuario = new usuario();
+        $usuario->__SET("id", $id_Usuario);
+        $usuario->__SET("email", $email[$id_Usuario]);
+        $usuario->__SET("usuario", $nombre[$clave]);
         
-               
-        $dao->Actualizar($tatuador);  
+        $daoU->Actualizar($usuario); 
         
     }
 

@@ -1,7 +1,7 @@
 <?php 
  
-    require_once 'Daotatuador.php';  
-    require_once 'Daopedido.php';  
+    require_once 'DAOtatuador.php';  
+    require_once 'DAOpedido.php';  
 
     $base="estudiotat";
     
@@ -60,8 +60,6 @@
     if (isset($_POST['estado'])){
 
         $filtro = $_POST['estado'];
-
-        
 
     }
 
